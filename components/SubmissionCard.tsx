@@ -4,6 +4,7 @@ import { Submission, SubmissionStatus } from '../types';
 import { Card } from './Card';
 import { generateSubmissionSummary, generateLeadScore, generateEmailDraft } from '../services/geminiService';
 import { updateSubmissionSummary, updateSubmissionScore } from '../services/submissionService';
+import { BookingConfirmationModal } from './BookingConfirmationModal';
 
 
 interface SubmissionCardProps {
@@ -71,6 +72,9 @@ export const SubmissionCard: React.FC<SubmissionCardProps> = ({ submission, onSt
   const [isDrafting, setIsDrafting] = useState(false);
   const [emailDraft, setEmailDraft] = useState<string | null>(null);
   const [showDraft, setShowDraft] = useState(false);
+
+  // Booking Confirmation Modal State
+  const [showBookingModal, setShowBookingModal] = useState(false);
 
 
   const handleGenerateSummary = async () => {
@@ -167,6 +171,14 @@ export const SubmissionCard: React.FC<SubmissionCardProps> = ({ submission, onSt
              <button onClick={handleGenerateDraft} disabled={isDrafting} className="btn-secondary py-1 px-3 text-xs border border-gray-300 bg-white">
                   {isDrafting ? 'Drafting...' : 'Draft Email Response'}
              </button>
+             {status === SubmissionStatus.Pending && (
+                 <button
+                     onClick={() => setShowBookingModal(true)}
+                     className="btn-primary py-1 px-3 text-xs bg-gradient-to-r from-green-500 to-green-600 text-white font-bold border-0 hover:from-green-600 hover:to-green-700 shadow-md"
+                 >
+                     💳 Confirm Booking & Send Payment Link
+                 </button>
+             )}
          </div>
 
          <div className="space-y-3">
@@ -223,6 +235,17 @@ export const SubmissionCard: React.FC<SubmissionCardProps> = ({ submission, onSt
           {dataEntries.map(({ label, value }) => <DataRow key={label} label={label} value={value} />)}
          </dl>
       </div>
+
+      {/* Booking Confirmation Modal */}
+      <BookingConfirmationModal
+        submission={submission}
+        isOpen={showBookingModal}
+        onClose={() => setShowBookingModal(false)}
+        onConfirm={() => {
+          // Refresh submissions after confirmation
+          onStatusChange(submission.id, SubmissionStatus.Confirmed);
+        }}
+      />
     </Card>
   );
 };

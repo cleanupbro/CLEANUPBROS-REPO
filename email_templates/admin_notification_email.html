@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Quote Request - Clean Up Bros</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background-color: #f5f5f7;
+    }
+    .container {
+      max-width: 700px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+      background: linear-gradient(135deg, #FF3B30 0%, #FF6259 100%);
+      padding: 30px;
+      text-align: center;
+      color: white;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .header p {
+      margin: 10px 0 0 0;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    .content {
+      padding: 30px;
+    }
+    .alert-box {
+      background: #FFF3CD;
+      border-left: 4px solid #FFC107;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+    }
+    .alert-box strong {
+      color: #856404;
+      font-size: 16px;
+    }
+    .alert-box p {
+      margin: 10px 0 0 0;
+      color: #856404;
+    }
+    .customer-info {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 25px;
+      margin: 25px 0;
+    }
+    .customer-info h2 {
+      margin: 0 0 20px 0;
+      color: #1d1d1f;
+      font-size: 20px;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    .info-item {
+      padding: 12px;
+      background: white;
+      border-radius: 8px;
+    }
+    .info-label {
+      font-size: 12px;
+      color: #86868b;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+    .info-value {
+      font-size: 16px;
+      color: #1d1d1f;
+      font-weight: 600;
+    }
+    .info-value.phone {
+      color: #0071e3;
+    }
+    .info-value.email {
+      color: #0071e3;
+      word-break: break-all;
+    }
+    .quote-details {
+      background: #f5f5f7;
+      border-radius: 12px;
+      padding: 25px;
+      margin: 25px 0;
+    }
+    .quote-details h3 {
+      margin: 0 0 15px 0;
+      color: #1d1d1f;
+      font-size: 18px;
+    }
+    .detail-row {
+      padding: 12px 0;
+      border-bottom: 1px solid #e0e0e0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+    .detail-label {
+      font-weight: 600;
+      color: #1d1d1f;
+    }
+    .detail-value {
+      color: #515154;
+      text-align: right;
+    }
+    .price-highlight {
+      background: linear-gradient(135deg, #F2B705 0%, #FFD700 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .lead-score {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    .lead-score.hot {
+      background: #34C759;
+      color: white;
+    }
+    .lead-score.warm {
+      background: #FFC107;
+      color: #1d1d1f;
+    }
+    .lead-score.cold {
+      background: #86868b;
+      color: white;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      margin: 30px 0;
+    }
+    .action-button {
+      flex: 1;
+      text-align: center;
+      padding: 15px 20px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+    }
+    .action-button.primary {
+      background: linear-gradient(135deg, #34C759 0%, #30D158 100%);
+      color: white;
+    }
+    .action-button.secondary {
+      background: linear-gradient(135deg, #0071e3 0%, #00a6ff 100%);
+      color: white;
+    }
+    .notes-section {
+      background: #FFF9E6;
+      border-left: 4px solid #F2B705;
+      padding: 20px;
+      margin: 25px 0;
+      border-radius: 8px;
+    }
+    .notes-section h3 {
+      margin: 0 0 10px 0;
+      color: #1d1d1f;
+      font-size: 16px;
+    }
+    .notes-section p {
+      margin: 0;
+      color: #515154;
+      font-style: italic;
+      line-height: 1.6;
+    }
+    .footer {
+      background: #f5f5f7;
+      padding: 20px 30px;
+      text-align: center;
+      color: #86868b;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>🚨 New Quote Request</h1>
+      <p>{{timestamp}} • Ref: {{referenceId}}</p>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <!-- Alert Box -->
+      <div class="alert-box">
+        <strong>⏰ ACTION REQUIRED</strong>
+        <p>Call customer within 2 hours to confirm details and finalize booking.</p>
+      </div>
+
+      <!-- Customer Information -->
+      <div class="customer-info">
+        <h2>👤 Customer Information</h2>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Name</div>
+            <div class="info-value">{{customerName}}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Lead Score</div>
+            <div class="info-value">
+              <span class="lead-score {{leadScoreClass}}">{{leadScore}}/100 • {{leadCategory}}</span>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Phone</div>
+            <div class="info-value phone">{{customerPhone}}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Email</div>
+            <div class="info-value email">{{customerEmail}}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quote Details -->
+      <div class="quote-details">
+        <h3>📋 Quote Details</h3>
+        <div class="detail-row">
+          <span class="detail-label">Service Type:</span>
+          <span class="detail-value">{{serviceType}}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Property:</span>
+          <span class="detail-value">{{propertyDetails}}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Suburb:</span>
+          <span class="detail-value">{{suburb}}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Bedrooms / Bathrooms:</span>
+          <span class="detail-value">{{bedrooms}} BR / {{bathrooms}} BA</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Frequency:</span>
+          <span class="detail-value">{{frequency}}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Preferred Date:</span>
+          <span class="detail-value">{{preferredDate}}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Estimated Price:</span>
+          <span class="detail-value price-highlight">{{estimatedPrice}}</span>
+        </div>
+      </div>
+
+      <!-- Special Notes -->
+      {{#if specialNotes}}
+      <div class="notes-section">
+        <h3>📝 Special Notes from Customer:</h3>
+        <p>{{specialNotes}}</p>
+      </div>
+      {{/if}}
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <a href="tel:{{customerPhone}}" class="action-button primary">📞 Call Customer Now</a>
+        <a href="https://cleanupbros.com.au/AdminDashboard" class="action-button secondary">📊 View in Dashboard</a>
+      </div>
+
+      <!-- Next Steps -->
+      <div style="background: #f9fafb; padding: 20px; border-radius: 12px; margin-top: 25px;">
+        <h3 style="margin: 0 0 15px 0; color: #1d1d1f; font-size: 16px;">✅ Next Steps:</h3>
+        <ol style="margin: 0; padding-left: 20px; color: #515154; line-height: 1.8;">
+          <li>Call customer to confirm details and discuss any special requirements</li>
+          <li>Finalize the exact quote based on conversation</li>
+          <li>Enter customer name, email, and final price in the admin dashboard</li>
+          <li>System will automatically generate and send Square payment link to customer</li>
+          <li>Once paid, schedule the service and send confirmation</li>
+        </ol>
+      </div>
+
+      <!-- AI Summary -->
+      <div style="margin-top: 25px; padding: 20px; background: #E8F4FD; border-radius: 12px;">
+        <h3 style="margin: 0 0 10px 0; color: #1d1d1f; font-size: 16px;">🤖 AI Summary:</h3>
+        <p style="margin: 0; color: #515154; line-height: 1.6;">{{aiSummary}}</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>This is an automated notification from Clean Up Bros Admin System</p>
+      <p style="margin-top: 10px;">© 2025 Clean Up Bros. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>

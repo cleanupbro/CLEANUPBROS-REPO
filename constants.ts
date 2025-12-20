@@ -8,6 +8,10 @@ export const WEBHOOK_URLS = {
   [ServiceType.Jobs]: 'https://nioctibinu.online/webhook/8da4395f-48f7-4d56-b500-3c43e2077ac6',
   [ServiceType.ClientFeedback]: 'https://nioctibinu.online/webhook/22624a36-cd07-4b6b-9334-3909dd3cff9f',
   LANDING_LEAD: 'https://nioctibinu.online/webhook/c5dc6960-15ee-4ccb-9cac-3bf8ffcb7bda',
+
+  // Admin Booking Confirmation & Payment
+  BOOKING_CONFIRMATION: 'https://nioctibinu.online/webhook/booking-confirmation',
+  SQUARE_PAYMENT_LINK: 'https://nioctibinu.online/webhook/create-payment-link',
 };
 
 export const SUCCESS_MESSAGES = {

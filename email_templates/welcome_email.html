@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to Clean Up Bros</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background-color: #f5f5f7;
+    }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+      background: linear-gradient(135deg, #0B2545 0%, #13315C 100%);
+      padding: 40px 30px;
+      text-align: center;
+    }
+    .logo {
+      font-size: 32px;
+      font-weight: bold;
+      background: linear-gradient(135deg, #F2B705 0%, #FFD700 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+    .tagline {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+    }
+    .content {
+      padding: 40px 30px;
+    }
+    .greeting {
+      font-size: 24px;
+      font-weight: 600;
+      color: #1d1d1f;
+      margin-bottom: 20px;
+    }
+    .message {
+      color: #515154;
+      line-height: 1.6;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    .quote-details {
+      background: #f5f5f7;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 30px 0;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+    .detail-label {
+      font-weight: 600;
+      color: #1d1d1f;
+    }
+    .detail-value {
+      color: #515154;
+    }
+    .highlight {
+      background: linear-gradient(135deg, #F2B705 0%, #FFD700 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: bold;
+    }
+    .cta-button {
+      display: inline-block;
+      background: linear-gradient(135deg, #0071e3 0%, #00a6ff 100%);
+      color: white;
+      text-decoration: none;
+      padding: 15px 40px;
+      border-radius: 980px;
+      font-weight: 600;
+      margin: 20px 0;
+      text-align: center;
+    }
+    .next-steps {
+      background: #f9fafb;
+      border-left: 4px solid #F2B705;
+      padding: 20px;
+      margin: 30px 0;
+      border-radius: 8px;
+    }
+    .next-steps h3 {
+      margin: 0 0 15px 0;
+      color: #1d1d1f;
+      font-size: 18px;
+    }
+    .next-steps ol {
+      margin: 0;
+      padding-left: 20px;
+      color: #515154;
+    }
+    .next-steps li {
+      margin: 10px 0;
+    }
+    .footer {
+      background: #f5f5f7;
+      padding: 30px;
+      text-align: center;
+      color: #86868b;
+      font-size: 14px;
+    }
+    .contact-info {
+      margin: 20px 0;
+    }
+    .contact-info a {
+      color: #0071e3;
+      text-decoration: none;
+    }
+    .social-links {
+      margin: 20px 0;
+    }
+    .social-links a {
+      display: inline-block;
+      margin: 0 10px;
+      color: #0071e3;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">✨ Clean Up Bros</div>
+      <div class="tagline">Sydney's Premier Cleaning Service</div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <div class="greeting">Hi {{customerName}}! 👋</div>
+
+      <div class="message">
+        Thank you for requesting a quote with <strong>Clean Up Bros</strong>! We're excited to help make your space sparkle.
+      </div>
+
+      <div class="message">
+        We've received your quote request for <span class="highlight">{{serviceType}}</span> cleaning and our team is reviewing the details.
+      </div>
+
+      <!-- Quote Details -->
+      <div class="quote-details">
+        <h3 style="margin-top: 0; color: #1d1d1f;">📋 Your Quote Details</h3>
+        <div class="detail-row">
+          <span class="detail-label">Service Type:</span>
+          <span class="detail-value">{{serviceType}}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Property:</span>
+          <span class="detail-value">{{propertyDetails}}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Estimated Price:</span>
+          <span class="detail-value highlight">{{estimatedPrice}}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Reference ID:</span>
+          <span class="detail-value">{{referenceId}}</span>
+        </div>
+      </div>
+
+      <!-- Next Steps -->
+      <div class="next-steps">
+        <h3>📞 What Happens Next?</h3>
+        <ol>
+          <li><strong>We'll call you within 2 hours</strong> to discuss your specific needs and confirm details</li>
+          <li><strong>Final quote confirmation</strong> - We'll provide a precise quote based on our conversation</li>
+          <li><strong>Secure payment link</strong> - You'll receive a payment link via email to confirm your booking</li>
+          <li><strong>Schedule your service</strong> - Once paid, we'll arrange a convenient time for your cleaning</li>
+        </ol>
+      </div>
+
+      <div class="message">
+        Our team member will reach out to you shortly at <strong>{{customerPhone}}</strong>. If you have any questions in the meantime, feel free to reach out!
+      </div>
+
+      <div style="text-align: center;">
+        <a href="tel:+61406764585" class="cta-button">📞 Call Us: +61 406 764 585</a>
+      </div>
+
+      <div class="message" style="margin-top: 30px; padding-top: 30px; border-top: 1px solid #e0e0e0;">
+        <strong>Why Choose Clean Up Bros?</strong><br>
+        ⭐ 4.9/5 Google Rating | 500+ Happy Clients | Eco-Friendly Products | 100% Satisfaction Guarantee
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="contact-info">
+        📞 <a href="tel:+61406764585">+61 406 764 585</a><br>
+        ✉️ <a href="mailto:cleanupbros.au@gmail.com">cleanupbros.au@gmail.com</a><br>
+        🌐 <a href="https://cleanupbros.com.au">www.cleanupbros.com.au</a>
+      </div>
+
+      <div style="margin: 20px 0; padding-top: 20px; border-top: 1px solid #d2d2d7;">
+        Clean Up Bros - Sydney's #1 Cleaning Service<br>
+        Residential • Commercial • Airbnb • Post-Construction
+      </div>
+
+      <div style="font-size: 12px; color: #a1a1a6;">
+        © 2025 Clean Up Bros. All rights reserved.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

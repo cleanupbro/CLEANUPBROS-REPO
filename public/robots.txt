@@ -1,0 +1,15 @@
+# Clean Up Bros - Robots.txt
+# Allow all crawlers
+
+User-agent: *
+Allow: /
+
+# Disallow admin pages
+Disallow: /AdminLogin
+Disallow: /AdminDashboard
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://cleanupbros.com.au/sitemap.xml

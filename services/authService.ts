@@ -82,34 +82,18 @@ export const signUpWithSupabase = async (email: string, password: string): Promi
   }
 };
 
-// Development/Testing credentials (REMOVE IN PRODUCTION)
-const DEV_CREDENTIALS: Record<string, string> = {
-  'cleanupbros.au@gmail.com': 'Miku@786',
-  'admin@cleanupbros.com.au': 'admin123'
-};
-
-// Main sign in function - with development fallback
+// Main sign in function - Supabase only (PRODUCTION READY)
 export const signIn = async (email: string, password: string): Promise<AuthResult> => {
-  // If Supabase is configured, use it
-  if (isSupabaseConfigured()) {
-    return await signInWithSupabase(email, password);
+  // SECURITY: Only use Supabase authentication
+  if (!isSupabaseConfigured()) {
+    console.error('❌ Supabase not configured! Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY');
+    return {
+      success: false,
+      error: 'Authentication service not configured. Please contact support.'
+    };
   }
 
-  // DEVELOPMENT MODE: Use local credentials when Supabase is not configured
-  // ⚠️ WARNING: Remove this in production!
-  const normalizedEmail = email.toLowerCase().trim();
-
-  if (DEV_CREDENTIALS[normalizedEmail] && DEV_CREDENTIALS[normalizedEmail] === password) {
-    localStorage.setItem(ADMIN_SESSION_KEY, 'true');
-    localStorage.setItem(ADMIN_EMAIL_KEY, normalizedEmail);
-    console.warn('🔧 Development mode: Using local authentication. Configure Supabase for production!');
-    return { success: true, email: normalizedEmail };
-  }
-
-  return {
-    success: false,
-    error: 'Invalid email or password. Please try again.'
-  };
+  return await signInWithSupabase(email, password);
 };
 
 // Sign out
