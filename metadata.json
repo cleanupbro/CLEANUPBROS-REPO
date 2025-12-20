@@ -1,0 +1,5 @@
+{
+  "name": "Clean Up Bros Quote & Application Portal",
+  "description": "A comprehensive web application for Clean Up Bros, a Sydney-based cleaning company. This portal allows customers to get quotes for residential, commercial, and Airbnb cleaning services, and for prospective employees to apply for jobs. All submissions are routed to the appropriate webhooks for processing.",
+  "requestFramePermissions": []
+}
