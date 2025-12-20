@@ -1,0 +1,321 @@
+{
+  "name": "Clean Up Bros - Quote to Payment Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "quote-received",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-quote-received",
+      "name": "Webhook - Quote Received",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [250, 300],
+      "webhookId": "cleanupbros-quote"
+    },
+    {
+      "parameters": {
+        "chatId": "={{$env.TELEGRAM_ADMIN_CHAT_ID}}",
+        "text": "=🚨 **NEW QUOTE REQUEST**\n\n👤 **Customer:** {{$json.customerName}}\n📞 **Phone:** [{{$json.customerPhone}}](tel:{{$json.customerPhone}})\n✉️ **Email:** {{$json.customerEmail}}\n\n🏠 **Service:** {{$json.serviceType}}\n📍 **Suburb:** {{$json.suburb}}\n💰 **Est. Price:** ${{$json.estimatedPrice}}\n⭐ **Lead Score:** {{$json.leadScore}}/100\n\n📋 **Ref:** {{$json.referenceId}}\n\n👉 **ACTION: Call customer within 2 hours!**\n\n[View in Dashboard](https://cleanupbros.com.au/AdminDashboard)",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "telegram-admin-alert",
+      "name": "Telegram - Alert Admin",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [450, 200],
+      "credentials": {
+        "telegramApi": {
+          "id": "1",
+          "name": "Clean Up Bros Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "hello@cleanupbros.com.au",
+        "toEmail": "={{$json.customerEmail}}",
+        "subject": "=Welcome to Clean Up Bros - Your Quote Request",
+        "html": "=<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Welcome to Clean Up Bros</title>\n</head>\n<body style=\"margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f5f5f7;\">\n  <div style=\"max-width:600px;margin:40px auto;background:white;border-radius:20px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);\">\n    <!-- Header -->\n    <div style=\"background:linear-gradient(135deg,#0B2545 0%,#13315C 100%);padding:40px 30px;text-align:center;\">\n      <div style=\"font-size:32px;font-weight:bold;background:linear-gradient(135deg,#F2B705 0%,#FFD700 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;\">✨ Clean Up Bros</div>\n      <div style=\"color:rgba(255,255,255,0.8);font-size:14px;\">Sydney's Premier Cleaning Service</div>\n    </div>\n    \n    <!-- Content -->\n    <div style=\"padding:40px 30px;\">\n      <div style=\"font-size:24px;font-weight:600;color:#1d1d1f;margin-bottom:20px;\">Hi {{$json.customerName}}! 👋</div>\n      \n      <div style=\"color:#515154;line-height:1.6;font-size:16px;margin-bottom:20px;\">\n        Thank you for requesting a quote with <strong>Clean Up Bros</strong>! We're excited to help make your space sparkle.\n      </div>\n      \n      <div style=\"color:#515154;line-height:1.6;font-size:16px;margin-bottom:20px;\">\n        We've received your quote request for <span style=\"background:linear-gradient(135deg,#F2B705 0%,#FFD700 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:bold;\">{{$json.serviceType}}</span> cleaning and our team is reviewing the details.\n      </div>\n      \n      <!-- Quote Details -->\n      <div style=\"background:#f5f5f7;border-radius:12px;padding:20px;margin:30px 0;\">\n        <h3 style=\"margin-top:0;color:#1d1d1f;\">📋 Your Quote Details</h3>\n        <div style=\"display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #e0e0e0;\">\n          <span style=\"font-weight:600;color:#1d1d1f;\">Service Type:</span>\n          <span style=\"color:#515154;\">{{$json.serviceType}}</span>\n        </div>\n        <div style=\"display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #e0e0e0;\">\n          <span style=\"font-weight:600;color:#1d1d1f;\">Property:</span>\n          <span style=\"color:#515154;\">{{$json.propertyDetails}}</span>\n        </div>\n        <div style=\"display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #e0e0e0;\">\n          <span style=\"font-weight:600;color:#1d1d1f;\">Estimated Price:</span>\n          <span style=\"background:linear-gradient(135deg,#F2B705 0%,#FFD700 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:bold;\">${{$json.estimatedPrice}}</span>\n        </div>\n        <div style=\"display:flex;justify-content:space-between;padding:10px 0;\">\n          <span style=\"font-weight:600;color:#1d1d1f;\">Reference ID:</span>\n          <span style=\"color:#515154;\">{{$json.referenceId}}</span>\n        </div>\n      </div>\n      \n      <!-- Next Steps -->\n      <div style=\"background:#f9fafb;border-left:4px solid #F2B705;padding:20px;margin:30px 0;border-radius:8px;\">\n        <h3 style=\"margin:0 0 15px 0;color:#1d1d1f;font-size:18px;\">📞 What Happens Next?</h3>\n        <ol style=\"margin:0;padding-left:20px;color:#515154;\">\n          <li style=\"margin:10px 0;\"><strong>We'll call you within 2 hours</strong> to discuss your specific needs</li>\n          <li style=\"margin:10px 0;\"><strong>Final quote confirmation</strong> based on our conversation</li>\n          <li style=\"margin:10px 0;\"><strong>Secure payment link</strong> via email</li>\n          <li style=\"margin:10px 0;\"><strong>Schedule your service</strong> at your convenience</li>\n        </ol>\n      </div>\n      \n      <div style=\"text-align:center;margin:30px 0;\">\n        <a href=\"tel:+61406764585\" style=\"display:inline-block;background:linear-gradient(135deg,#0071e3 0%,#00a6ff 100%);color:white;text-decoration:none;padding:18px 50px;border-radius:980px;font-weight:600;font-size:18px;box-shadow:0 4px 15px rgba(0,113,227,0.3);\">📞 Call Us: +61 406 764 585</a>\n      </div>\n      \n      <div style=\"color:#515154;line-height:1.6;font-size:16px;margin-top:30px;padding-top:30px;border-top:1px solid #e0e0e0;\">\n        <strong>Why Choose Clean Up Bros?</strong><br>\n        ⭐ 4.9/5 Google Rating | 500+ Happy Clients | Eco-Friendly | 100% Satisfaction Guarantee\n      </div>\n    </div>\n    \n    <!-- Footer -->\n    <div style=\"background:#f5f5f7;padding:30px;text-align:center;color:#86868b;font-size:14px;\">\n      <div style=\"margin:20px 0;\">\n        📞 <a href=\"tel:+61406764585\" style=\"color:#0071e3;text-decoration:none;\">+61 406 764 585</a><br>\n        ✉️ <a href=\"mailto:cleanupbros.au@gmail.com\" style=\"color:#0071e3;text-decoration:none;\">cleanupbros.au@gmail.com</a><br>\n        🌐 <a href=\"https://cleanupbros.com.au\" style=\"color:#0071e3;text-decoration:none;\">www.cleanupbros.com.au</a>\n      </div>\n      <div style=\"margin:20px 0;padding-top:20px;border-top:1px solid #d2d2d7;\">\n        Clean Up Bros - Sydney's #1 Cleaning Service<br>\n        © 2025 Clean Up Bros. All rights reserved.\n      </div>\n    </div>\n  </div>\n</body>\n</html>",
+        "options": {}
+      },
+      "id": "resend-welcome-email",
+      "name": "Resend - Welcome Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [450, 300],
+      "credentials": {
+        "resendApi": {
+          "id": "1",
+          "name": "Resend API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "alerts@cleanupbros.com.au",
+        "toEmail": "cleanupbros.au@gmail.com",
+        "subject": "=🚨 NEW QUOTE - {{$json.customerName}} - ${{$json.estimatedPrice}}",
+        "html": "=<!-- Admin notification email - use template from email_templates/admin_notification_email.html -->",
+        "options": {}
+      },
+      "id": "resend-admin-email",
+      "name": "Resend - Admin Alert",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [450, 400],
+      "credentials": {
+        "resendApi": {
+          "id": "1",
+          "name": "Resend API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "id": "respond-webhook",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "booking-confirmation",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-booking-confirmed",
+      "name": "Webhook - Booking Confirmed",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [250, 600],
+      "webhookId": "cleanupbros-booking"
+    },
+    {
+      "parameters": {
+        "url": "=https://connect.squareup.com/v2/online-checkout/payment-links",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Square-Version",
+              "value": "2024-12-18"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "idempotency_key",
+              "value": "={{$json.referenceId}}"
+            },
+            {
+              "name": "order",
+              "value": "={\"location_id\":\"{{$env.SQUARE_LOCATION_ID}}\",\"line_items\":[{\"name\":\"{{$json.serviceType}}\",\"quantity\":\"1\",\"base_price_money\":{\"amount\":{{$json.finalPrice * 100}},\"currency\":\"AUD\"},\"note\":\"{{$json.notes}}\"}]}"
+            },
+            {
+              "name": "checkout_options",
+              "value": "={\"redirect_url\":\"https://cleanupbros.com.au/payment-success\",\"merchant_support_email\":\"cleanupbros.au@gmail.com\",\"ask_for_shipping_address\":false,\"enable_loyalty\":false}"
+            },
+            {
+              "name": "pre_populated_data",
+              "value": "={\"buyer_email\":\"{{$json.customerEmail}}\",\"buyer_phone_number\":\"{{$json.customerPhone}}\"}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "square-create-payment-link",
+      "name": "Square - Create Payment Link",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [450, 600],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "2",
+          "name": "Square API Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "hello@cleanupbros.com.au",
+        "toEmail": "={{$json.body.customerEmail}}",
+        "subject": "=Your Payment Link - Clean Up Bros Booking Confirmation",
+        "html": "=<!-- Payment request email - use template from email_templates/payment_request_email.html -->",
+        "options": {}
+      },
+      "id": "resend-payment-link",
+      "name": "Resend - Payment Link Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [650, 600],
+      "credentials": {
+        "resendApi": {
+          "id": "1",
+          "name": "Resend API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$env.TELEGRAM_ADMIN_CHAT_ID}}",
+        "text": "=✅ **PAYMENT LINK SENT**\n\n💳 Payment link sent to: **{{$json.body.customerName}}**\n💸 Amount: **${{$json.body.finalPrice}}** AUD\n\n📧 Email sent with payment instructions\n⏳ Awaiting customer payment\n\n[View Payment Link]({{$json.payment_link.url}})",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "telegram-payment-sent",
+      "name": "Telegram - Payment Link Sent",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [650, 500],
+      "credentials": {
+        "telegramApi": {
+          "id": "1",
+          "name": "Clean Up Bros Telegram Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "id": "respond-booking-webhook",
+      "name": "Respond to Booking Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [850, 600]
+    }
+  ],
+  "connections": {
+    "Webhook - Quote Received": {
+      "main": [
+        [
+          {
+            "node": "Telegram - Alert Admin",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Resend - Welcome Email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Resend - Admin Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram - Alert Admin": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resend - Welcome Email": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resend - Admin Alert": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook - Booking Confirmed": {
+      "main": [
+        [
+          {
+            "node": "Square - Create Payment Link",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Square - Create Payment Link": {
+      "main": [
+        [
+          {
+            "node": "Resend - Payment Link Email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Telegram - Payment Link Sent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resend - Payment Link Email": {
+      "main": [
+        [
+          {
+            "node": "Respond to Booking Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram - Payment Link Sent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Booking Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 2,
+  "updatedAt": "2025-12-21T00:00:00.000Z",
+  "versionId": "1"
+}
