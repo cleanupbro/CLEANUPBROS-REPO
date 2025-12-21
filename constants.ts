@@ -12,6 +12,14 @@ export const WEBHOOK_URLS = {
   // Admin Booking Confirmation & Payment
   BOOKING_CONFIRMATION: 'https://nioctibinu.online/webhook/booking-confirmation',
   SQUARE_PAYMENT_LINK: 'https://nioctibinu.online/webhook/create-payment-link',
+
+  // Gift Card System
+  GIFT_CARD_PURCHASE: 'https://nioctibinu.online/webhook/gift-card-purchase',
+  GIFT_CARD_ACTIVATION: 'https://nioctibinu.online/webhook/gift-card-activation',
+  GIFT_CARD_REDEMPTION: 'https://nioctibinu.online/webhook/gift-card-redemption',
+
+  // Google Sheets Logging (Backup)
+  GOOGLE_SHEETS_LOG: 'https://nioctibinu.online/webhook/google-sheets-log',
 };
 
 export const SUCCESS_MESSAGES = {

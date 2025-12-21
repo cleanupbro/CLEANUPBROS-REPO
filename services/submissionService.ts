@@ -1,5 +1,13 @@
-import { Submission, SubmissionStatus, SubmissionType, SubmissionData } from '../types';
+import { Submission, SubmissionStatus, SubmissionType, SubmissionData, ServiceType } from '../types';
 import { supabase, isSupabaseConfigured } from '../lib/supabaseClient';
+import {
+  logResidentialQuote,
+  logCommercialQuote,
+  logAirbnbQuote,
+  logJobApplication,
+  logClientFeedback,
+  logLandingLead,
+} from './googleSheetsService';
 
 const SUBMISSIONS_KEY = 'cleanUpBrosSubmissions';
 
@@ -51,6 +59,33 @@ export const saveSubmission = async (submission: { type: SubmissionType, data: S
     timestamp: Date.now(),
     status: SubmissionStatus.Pending,
   };
+
+  // Log to Google Sheets for backup (async, don't wait)
+  try {
+    switch (submission.type) {
+      case ServiceType.Residential:
+        logResidentialQuote(submission.data, id).catch(err => console.warn('Google Sheets logging failed:', err));
+        break;
+      case ServiceType.Commercial:
+        logCommercialQuote(submission.data, id).catch(err => console.warn('Google Sheets logging failed:', err));
+        break;
+      case ServiceType.Airbnb:
+        logAirbnbQuote(submission.data, id).catch(err => console.warn('Google Sheets logging failed:', err));
+        break;
+      case ServiceType.Jobs:
+        logJobApplication(submission.data, id).catch(err => console.warn('Google Sheets logging failed:', err));
+        break;
+      case 'Client Feedback':
+        logClientFeedback(submission.data, id).catch(err => console.warn('Google Sheets logging failed:', err));
+        break;
+      case 'Landing Lead':
+        logLandingLead(submission.data, id).catch(err => console.warn('Google Sheets logging failed:', err));
+        break;
+    }
+  } catch (error) {
+    // Don't let Google Sheets logging break the main flow
+    console.warn('Google Sheets logging error:', error);
+  }
 
   // Save to Supabase if configured
   if (isSupabaseConfigured() && supabase) {

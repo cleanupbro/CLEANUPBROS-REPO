@@ -14,6 +14,7 @@ export const Header: React.FC<{ navigateTo: (view: ViewType) => void }> = ({ nav
             <button onClick={() => navigateTo('Landing')} className="hidden md:block text-[13px] font-medium text-[#1D1D1F] hover:text-[#0071e3] transition-all">Home</button>
             <button onClick={() => navigateTo('Services')} className="hidden md:block text-[13px] font-medium text-[#1D1D1F] hover:text-[#0071e3] transition-all">Services</button>
             <button onClick={() => navigateTo('CleanUpCard')} className="hidden md:block text-[13px] text-[#F2B705] hover:text-[#FFD700] transition-all font-bold">💳 Card</button>
+            <button onClick={() => navigateTo('GiftCardPurchase')} className="hidden md:block text-[13px] text-[#10B981] hover:text-[#059669] transition-all font-bold">🎁 Gift Cards</button>
             <button onClick={() => navigateTo('About')} className="hidden md:block text-[13px] font-medium text-[#1D1D1F] hover:text-[#0071e3] transition-all">About</button>
             <button onClick={() => navigateTo('Reviews')} className="hidden md:block text-[13px] font-medium text-[#1D1D1F] hover:text-[#0071e3] transition-all">Reviews</button>
             <button onClick={() => navigateTo('Contact')} className="hidden lg:block text-[13px] font-medium text-[#1D1D1F] hover:text-[#0071e3] transition-all">Contact</button>

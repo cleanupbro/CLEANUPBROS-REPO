@@ -21,6 +21,8 @@ const ReviewsView = lazy(() => import('./views/ReviewsView'));
 const ContactView = lazy(() => import('./views/ContactView'));
 const ServicesView = lazy(() => import('./views/ServicesView'));
 const CleanUpCardView = lazy(() => import('./views/CleanUpCardView'));
+const GiftCardPurchaseView = lazy(() => import('./views/GiftCardPurchaseView'));
+const AdminGiftCardsView = lazy(() => import('./views/AdminGiftCardsView'));
 
 // Loading component
 const LoadingSpinner = () => (
@@ -92,7 +94,7 @@ const App: React.FC = () => {
     }
     if (currentView === 'AdminDashboard') {
         if (isAdminLoggedIn && adminEmail) {
-            return <AdminDashboardView onLogout={handleLogout} adminEmail={adminEmail} />;
+            return <AdminDashboardView onLogout={handleLogout} adminEmail={adminEmail} navigateTo={navigateTo} />;
         }
         return <AdminLoginView onLoginSuccess={handleLoginSuccess} />;
     }
@@ -121,6 +123,13 @@ const App: React.FC = () => {
         return <ServicesView navigateTo={navigateTo} />;
       case 'CleanUpCard':
         return <CleanUpCardView navigateTo={navigateTo} />;
+      case 'GiftCardPurchase':
+        return <GiftCardPurchaseView navigateTo={navigateTo} />;
+      case 'AdminGiftCards':
+        if (isAdminLoggedIn && adminEmail) {
+          return <AdminGiftCardsView />;
+        }
+        return <AdminLoginView onLoginSuccess={handleLoginSuccess} />;
       case 'Landing':
       default:
         return <LandingView navigateTo={navigateTo} onSubmissionFail={handleSubmissionFail} />;

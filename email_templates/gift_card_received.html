@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You've Received a Gift Card!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        .header {
+            background: linear-gradient(135deg, #0B2545 0%, #13315C 100%);
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .header h1 {
+            color: #F2B705;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .gift-card {
+            background: linear-gradient(135deg, #F2B705 0%, #D4A000 100%);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(242, 183, 5, 0.3);
+        }
+        .value {
+            font-size: 48px;
+            font-weight: bold;
+            color: #0B2545;
+            margin-bottom: 15px;
+        }
+        .code {
+            background: rgba(11, 37, 69, 0.9);
+            color: #F2B705;
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 15px 30px;
+            border-radius: 10px;
+            letter-spacing: 2px;
+            margin: 20px 0;
+            display: inline-block;
+        }
+        .instructions {
+            color: #0B2545;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+        .gift-message {
+            background: rgba(242, 183, 5, 0.1);
+            border-left: 4px solid #F2B705;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 10px;
+        }
+        .gift-message .label {
+            color: #0B2545;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .gift-message .message {
+            color: #13315C;
+            font-size: 16px;
+            font-style: italic;
+            line-height: 1.6;
+        }
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #0B2545 0%, #13315C 100%);
+            color: white;
+            text-decoration: none;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 18px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(11, 37, 69, 0.3);
+            transition: transform 0.2s;
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+        .steps {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        .steps ol {
+            margin-left: 20px;
+            color: #13315C;
+            line-height: 2;
+        }
+        .steps ol li {
+            margin: 10px 0;
+        }
+        .steps strong {
+            color: #0B2545;
+        }
+        .footer {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+        }
+        .footer p {
+            color: #6c757d;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+        .fine-print {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #6c757d;
+            line-height: 1.6;
+        }
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #F2B705, transparent);
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎁 You've Received a Gift!</h1>
+            <p>Someone special sent you a Clean Up Bros Gift Card</p>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <p style="font-size: 18px; color: #0B2545; margin-bottom: 20px;">
+                Hi <strong>{{recipientName}}</strong>,
+            </p>
+
+            <p style="font-size: 16px; color: #13315C; line-height: 1.8; margin-bottom: 25px;">
+                Great news! You've received a <strong>Clean Up Bros Gift Card</strong> worth <strong style="color: #F2B705;">${{totalValue}}</strong>! Treat yourself to a spotless, professionally cleaned home on us!
+            </p>
+
+            <!-- Gift Message (if provided) -->
+            {{#if giftMessage}}
+            <div class="gift-message">
+                <p class="label">💌 Personal Message from {{purchaserName}}:</p>
+                <p class="message">"{{giftMessage}}"</p>
+            </div>
+            {{/if}}
+
+            <div class="divider"></div>
+
+            <!-- Gift Card Display -->
+            <div class="gift-card">
+                <div class="value">${{totalValue}}</div>
+                <div style="font-size: 16px; color: #0B2545; margin-bottom: 20px;">
+                    Gift Card Value
+                </div>
+                <div class="code">{{code}}</div>
+                <p class="instructions">Save this code to use at checkout</p>
+            </div>
+
+            <!-- How to Use -->
+            <h2 style="color: #0B2545; font-size: 24px; margin: 30px 0 20px;">How to Use Your Gift Card:</h2>
+            <div class="steps">
+                <ol>
+                    <li>Visit <a href="https://cleanupbros.com.au" style="color: #0B2545; font-weight: bold;">cleanupbros.com.au</a></li>
+                    <li>Choose your cleaning service (Residential, Commercial, or Airbnb)</li>
+                    <li>Fill out the quick quote form</li>
+                    <li>At checkout, enter code <strong>{{code}}</strong></li>
+                    <li>Your gift card credit will be applied automatically</li>
+                    <li>Enjoy your professionally cleaned space! ✨</li>
+                </ol>
+            </div>
+
+            <!-- CTA Button -->
+            <div style="text-align: center;">
+                <a href="https://cleanupbros.com.au" class="cta-button">
+                    🏡 Book Your Cleaning Now
+                </a>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Benefits -->
+            <h3 style="color: #0B2545; font-size: 20px; margin: 25px 0 15px;">What You Get:</h3>
+            <table style="width: 100%; margin: 20px 0;">
+                <tr>
+                    <td style="text-align: center; padding: 15px;">
+                        <div style="font-size: 32px; margin-bottom: 10px;">⭐</div>
+                        <div style="font-weight: bold; color: #0B2545; margin-bottom: 5px;">Professional Team</div>
+                        <div style="font-size: 14px; color: #6c757d;">Trained & certified cleaners</div>
+                    </td>
+                    <td style="text-align: center; padding: 15px;">
+                        <div style="font-size: 32px; margin-bottom: 10px;">✨</div>
+                        <div style="font-weight: bold; color: #0B2545; margin-bottom: 5px;">Spotless Results</div>
+                        <div style="font-size: 14px; color: #6c757d;">100% satisfaction guarantee</div>
+                    </td>
+                    <td style="text-align: center; padding: 15px;">
+                        <div style="font-size: 32px; margin-bottom: 10px;">🔒</div>
+                        <div style="font-weight: bold; color: #0B2545; margin-bottom: 5px;">Fully Insured</div>
+                        <div style="font-size: 14px; color: #6c757d;">Peace of mind guaranteed</div>
+                    </td>
+                </tr>
+            </table>
+
+            <p style="font-size: 14px; color: #6c757d; text-align: center; margin-top: 30px;">
+                Questions? Reply to this email or call us at <strong>+61 406 764 585</strong>
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>Clean Up Bros</strong></p>
+            <p>Liverpool, Sydney NSW</p>
+            <p>📞 +61 406 764 585</p>
+            <p>📧 cleanupbros.au@gmail.com</p>
+            <p>🌐 <a href="https://cleanupbros.com.au" style="color: #0B2545; text-decoration: none;">cleanupbros.com.au</a></p>
+        </div>
+
+        <!-- Fine Print -->
+        <div class="fine-print">
+            <p>Gift card never expires and can be used for any Clean Up Bros service. Non-refundable. If your booking total exceeds the gift card value, you'll pay the difference. Any remaining balance stays on your card for future use.</p>
+        </div>
+    </div>
+</body>
+</html>

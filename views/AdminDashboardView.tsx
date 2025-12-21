@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { getSubmissions, updateSubmissionStatus } from '../services/submissionService';
-import { Submission, SubmissionStatus, SubmissionType, ServiceType } from '../types';
+import { Submission, SubmissionStatus, SubmissionType, ServiceType, ViewType } from '../types';
 import { SubmissionCard } from '../components/SubmissionCard';
 import AdminChatBot from '../components/AdminChatBot';
 import { supabase, isSupabaseConfigured } from '../lib/supabaseClient';
@@ -8,6 +8,7 @@ import { supabase, isSupabaseConfigured } from '../lib/supabaseClient';
 interface AdminDashboardViewProps {
   onLogout: () => void;
   adminEmail: string;
+  navigateTo: (view: ViewType) => void;
 }
 
 const FILTERS: { label: string, type: SubmissionType | 'All', icon: string }[] = [
@@ -84,7 +85,7 @@ const MiniBarChart: React.FC<{ data: { label: string; value: number; color: stri
   );
 };
 
-const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onLogout, adminEmail }) => {
+const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onLogout, adminEmail, navigateTo }) => {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [activeFilter, setActiveFilter] = useState<SubmissionType | 'All'>('All');
   const [activeTab, setActiveTab] = useState<'overview' | 'submissions' | 'chat'>('overview');
@@ -261,6 +262,12 @@ const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onLogout, admin
               <p className="text-sm text-gray-600 mt-1">Welcome back, {adminEmail}</p>
             </div>
             <div className="flex items-center gap-3">
+              <button
+                onClick={() => navigateTo('AdminGiftCards')}
+                className="px-4 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors font-medium text-sm flex items-center gap-2"
+              >
+                <span>🎁</span> Gift Cards
+              </button>
               <button
                 onClick={handleExportCSV}
                 className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium text-sm flex items-center gap-2"
