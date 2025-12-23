@@ -1,6 +1,5 @@
 import React from 'react';
 import { NavigationProps, ServiceType } from '../types';
-import { Card } from '../components/Card';
 
 const ServicesView: React.FC<NavigationProps> = ({ navigateTo }) => {
   const services = [
@@ -91,144 +90,197 @@ const ServicesView: React.FC<NavigationProps> = ({ navigateTo }) => {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="w-full">
       {/* Hero Section */}
-      <div className="text-center mb-16">
-        <h1 className="text-5xl md:text-6xl font-bold text-brand-navy mb-6">
-          Our Services
-        </h1>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          Professional cleaning solutions for every need. From homes to offices, we've got you covered.
-        </p>
+      <div className="hero-unit min-h-[650px] md:min-h-[750px] bg-black text-white mb-0 relative group overflow-hidden">
+        <div className="hero-unit-text flex flex-col items-center">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4 leading-tight text-center drop-shadow-2xl text-white">
+            Our Services
+          </h1>
+          <p className="text-2xl md:text-3xl font-medium text-center drop-shadow-lg max-w-4xl">
+            Professional cleaning solutions for every need
+          </p>
+          <p className="text-lg md:text-xl text-white/90 text-center drop-shadow-md max-w-3xl mt-2">
+            From homes to offices, we've got you covered
+          </p>
+        </div>
+        <div
+          className="absolute inset-0 bg-cover bg-center animate-slow-zoom"
+          style={{
+            backgroundImage: `url(https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=1920&q=80)`
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70" />
       </div>
 
-      {/* Main Services */}
-      <div className="mb-20">
-        <h2 className="text-4xl font-bold text-brand-navy text-center mb-12">Core Services</h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          {services.map((service, index) => (
-            <Card key={index}>
-              <div className="text-center mb-6">
-                <div className="text-6xl mb-4">{service.icon}</div>
-                <h3 className="text-2xl font-bold text-brand-navy mb-3">{service.title}</h3>
-                <p className="text-gray-600 mb-4">{service.description}</p>
-              </div>
-
-              <div className="space-y-2 mb-6">
-                {service.features.map((feature, i) => (
-                  <div key={i} className="flex items-start gap-2">
-                    <span className="text-brand-gold">✓</span>
-                    <span className="text-sm text-gray-700">{feature}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="border-t border-gray-200 pt-4 mt-auto">
-                <div className="text-center mb-4">
-                  <span className="text-sm text-gray-500">Starting from</span>
-                  <div className="text-3xl font-bold text-brand-navy">{service.startingPrice}</div>
+      {/* Core Services */}
+      <div className="bg-white py-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-[#1D1D1F] text-center mb-16">
+            Core Services
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {services.map((service, index) => (
+              <div key={index} className="apple-card p-8 flex flex-col transform hover:scale-[1.02] transition-all duration-300">
+                <div className="text-center mb-6">
+                  <div className="text-7xl mb-4">{service.icon}</div>
+                  <h3 className="text-2xl md:text-3xl font-bold text-[#1D1D1F] mb-3">{service.title}</h3>
+                  <p className="text-[#86868b] leading-relaxed">{service.description}</p>
                 </div>
-                <button onClick={service.action} className="btn-primary w-full">
-                  Get Quote
-                </button>
+
+                <div className="space-y-3 mb-6 flex-grow">
+                  {service.features.map((feature, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <span className="text-brand-gold text-xl">✓</span>
+                      <span className="text-[#1D1D1F]">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="border-t-2 border-gray-100 pt-6 mt-auto">
+                  <div className="text-center mb-4">
+                    <span className="text-sm text-[#86868b] block mb-1">Starting from</span>
+                    <div className="text-4xl font-bold text-[#1D1D1F]">{service.startingPrice}</div>
+                  </div>
+                  <button
+                    onClick={service.action}
+                    className="btn-primary w-full py-4 text-lg shadow-lg hover:shadow-xl"
+                  >
+                    Get Quote
+                  </button>
+                </div>
               </div>
-            </Card>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Add-On Services */}
-      <div className="mb-20">
-        <h2 className="text-4xl font-bold text-brand-navy text-center mb-4">Add-On Services</h2>
-        <p className="text-center text-gray-600 mb-12">Enhance your cleaning with these specialized services</p>
+      <div className="bg-gradient-to-br from-[#F5F5F7] to-white py-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-[#1D1D1F] text-center mb-4">
+            Add-On Services
+          </h2>
+          <p className="text-center text-[#86868b] text-lg mb-16">
+            Enhance your cleaning with these specialized services
+          </p>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {addOnServices.map((addon, index) => (
-            <Card key={index}>
-              <div className="flex items-start gap-4">
-                <div className="text-4xl">{addon.icon}</div>
-                <div className="flex-1">
-                  <h3 className="font-bold text-brand-navy mb-1">{addon.title}</h3>
-                  <p className="text-sm text-gray-600 mb-2">{addon.description}</p>
-                  <p className="text-brand-gold font-semibold">{addon.price}</p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {addOnServices.map((addon, index) => (
+              <div key={index} className="apple-card p-6 transform hover:scale-105 transition-all duration-300">
+                <div className="flex items-start gap-4">
+                  <div className="text-5xl">{addon.icon}</div>
+                  <div className="flex-1">
+                    <h3 className="font-bold text-lg text-[#1D1D1F] mb-2">{addon.title}</h3>
+                    <p className="text-sm text-[#86868b] mb-3 leading-relaxed">{addon.description}</p>
+                    <p className="text-brand-gold font-bold text-lg">{addon.price}</p>
+                  </div>
                 </div>
               </div>
-            </Card>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Process Section */}
-      <div className="mb-20">
-        <h2 className="text-4xl font-bold text-brand-navy text-center mb-12">How It Works</h2>
-        <div className="grid md:grid-cols-4 gap-8">
-          <div className="text-center">
-            <div className="w-16 h-16 bg-brand-gold text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">1</div>
-            <h3 className="font-bold text-brand-navy mb-2">Get a Quote</h3>
-            <p className="text-gray-600 text-sm">Fill out our quick form or call us for an instant estimate</p>
-          </div>
+      {/* How It Works */}
+      <div className="bg-white py-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-[#1D1D1F] text-center mb-16">
+            How It Works
+          </h2>
+          <div className="grid md:grid-cols-4 gap-8">
+            <div className="text-center transform hover:scale-105 transition-all duration-300">
+              <div className="w-20 h-20 bg-brand-gold text-white rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-4 shadow-lg">
+                1
+              </div>
+              <h3 className="font-bold text-xl text-[#1D1D1F] mb-2">Get a Quote</h3>
+              <p className="text-[#86868b] leading-relaxed">Fill out our quick form or call us for an instant estimate</p>
+            </div>
 
-          <div className="text-center">
-            <div className="w-16 h-16 bg-brand-gold text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">2</div>
-            <h3 className="font-bold text-brand-navy mb-2">Schedule Service</h3>
-            <p className="text-gray-600 text-sm">Choose a date and time that works for you</p>
-          </div>
+            <div className="text-center transform hover:scale-105 transition-all duration-300">
+              <div className="w-20 h-20 bg-brand-gold text-white rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-4 shadow-lg">
+                2
+              </div>
+              <h3 className="font-bold text-xl text-[#1D1D1F] mb-2">Schedule Service</h3>
+              <p className="text-[#86868b] leading-relaxed">Choose a date and time that works for you</p>
+            </div>
 
-          <div className="text-center">
-            <div className="w-16 h-16 bg-brand-gold text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">3</div>
-            <h3 className="font-bold text-brand-navy mb-2">We Clean</h3>
-            <p className="text-gray-600 text-sm">Our professional team arrives and gets to work</p>
-          </div>
+            <div className="text-center transform hover:scale-105 transition-all duration-300">
+              <div className="w-20 h-20 bg-brand-gold text-white rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-4 shadow-lg">
+                3
+              </div>
+              <h3 className="font-bold text-xl text-[#1D1D1F] mb-2">We Clean</h3>
+              <p className="text-[#86868b] leading-relaxed">Our professional team arrives and gets to work</p>
+            </div>
 
-          <div className="text-center">
-            <div className="w-16 h-16 bg-brand-gold text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">4</div>
-            <h3 className="font-bold text-brand-navy mb-2">Enjoy</h3>
-            <p className="text-gray-600 text-sm">Relax in your spotless space!</p>
+            <div className="text-center transform hover:scale-105 transition-all duration-300">
+              <div className="w-20 h-20 bg-brand-gold text-white rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-4 shadow-lg">
+                4
+              </div>
+              <h3 className="font-bold text-xl text-[#1D1D1F] mb-2">Enjoy</h3>
+              <p className="text-[#86868b] leading-relaxed">Relax in your spotless space!</p>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Why Choose Us */}
-      <div className="bg-gradient-to-r from-brand-navy to-brand-gold text-white rounded-3xl p-12 mb-20">
-        <h2 className="text-4xl font-bold text-center mb-12">Why Choose Clean Up Bros?</h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div className="text-center">
-            <div className="text-5xl mb-3">✨</div>
-            <h3 className="font-bold text-xl mb-2">Quality Guaranteed</h3>
-            <p className="text-sm opacity-90">100% satisfaction or we re-clean free</p>
-          </div>
+      <div className="bg-gradient-to-br from-[#1D1D1F] to-gray-900 text-white py-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">
+            Why Choose Clean Up Bros?
+          </h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="text-center transform hover:scale-110 transition-all duration-300">
+              <div className="text-6xl mb-4">✨</div>
+              <h3 className="font-bold text-2xl mb-3">Quality Guaranteed</h3>
+              <p className="text-white/80 leading-relaxed">100% satisfaction or we re-clean free</p>
+            </div>
 
-          <div className="text-center">
-            <div className="text-5xl mb-3">💯</div>
-            <h3 className="font-bold text-xl mb-2">Fully Insured</h3>
-            <p className="text-sm opacity-90">Your property is protected</p>
-          </div>
+            <div className="text-center transform hover:scale-110 transition-all duration-300">
+              <div className="text-6xl mb-4">💯</div>
+              <h3 className="font-bold text-2xl mb-3">Fully Insured</h3>
+              <p className="text-white/80 leading-relaxed">Your property is protected</p>
+            </div>
 
-          <div className="text-center">
-            <div className="text-5xl mb-3">⏰</div>
-            <h3 className="font-bold text-xl mb-2">Punctual</h3>
-            <p className="text-sm opacity-90">Always on time, every time</p>
-          </div>
+            <div className="text-center transform hover:scale-110 transition-all duration-300">
+              <div className="text-6xl mb-4">⏰</div>
+              <h3 className="font-bold text-2xl mb-3">Punctual</h3>
+              <p className="text-white/80 leading-relaxed">Always on time, every time</p>
+            </div>
 
-          <div className="text-center">
-            <div className="text-5xl mb-3">🌱</div>
-            <h3 className="font-bold text-xl mb-2">Eco-Friendly</h3>
-            <p className="text-sm opacity-90">Safe products for your family</p>
+            <div className="text-center transform hover:scale-110 transition-all duration-300">
+              <div className="text-6xl mb-4">🌱</div>
+              <h3 className="font-bold text-2xl mb-3">Eco-Friendly</h3>
+              <p className="text-white/80 leading-relaxed">Safe products for your family</p>
+            </div>
           </div>
         </div>
       </div>
 
       {/* CTA Section */}
-      <div className="text-center">
-        <h2 className="text-4xl font-bold text-brand-navy mb-6">Ready to Get Started?</h2>
-        <p className="text-xl text-gray-600 mb-8">Get your free quote in less than 60 seconds</p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button onClick={() => navigateTo('Landing')} className="btn-primary text-xl px-12 py-4">
-            Get Free Quote
-          </button>
-          <button onClick={() => navigateTo('Contact')} className="btn-secondary text-xl px-12 py-4">
-            Contact Us
-          </button>
+      <div className="bg-gradient-to-br from-[#F5F5F7] to-white py-20 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl md:text-5xl font-bold text-[#1D1D1F] mb-6">
+            Ready to Get Started?
+          </h2>
+          <p className="text-xl md:text-2xl text-[#86868b] mb-10">
+            Get your free quote in less than 60 seconds
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={() => navigateTo('Landing')}
+              className="btn-primary text-xl px-12 py-4 shadow-xl hover:shadow-2xl"
+            >
+              Get Free Quote
+            </button>
+            <button
+              onClick={() => navigateTo('Contact')}
+              className="btn-secondary text-xl px-12 py-4 shadow-lg hover:shadow-xl"
+            >
+              Contact Us
+            </button>
+          </div>
         </div>
       </div>
     </div>

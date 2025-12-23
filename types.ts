@@ -28,7 +28,7 @@ export interface Submission {
   leadReasoning?: string;
 }
 
-export type ViewType = ServiceType | 'Landing' | 'Success' | 'AdminLogin' | 'AdminDashboard' | 'ClientFeedback' | 'About' | 'Reviews' | 'Contact' | 'Services' | 'CleanUpCard' | 'GiftCardPurchase' | 'AdminGiftCards';
+export type ViewType = ServiceType | 'Landing' | 'Success' | 'AdminLogin' | 'AdminDashboard' | 'ClientFeedback' | 'About' | 'Reviews' | 'Contact' | 'Services' | 'CleanUpCard' | 'GiftCardPurchase' | 'AdminGiftCards' | 'AirbnbContract' | 'BasicContract' | 'CommercialInvoice' | 'AdminContracts';
 
 export interface NavigationProps {
   navigateTo: (view: ViewType, message?: string, initialState?: any) => void;

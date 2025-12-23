@@ -263,6 +263,12 @@ const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onLogout, admin
             </div>
             <div className="flex items-center gap-3">
               <button
+                onClick={() => navigateTo('AdminContracts')}
+                className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors font-medium text-sm flex items-center gap-2"
+              >
+                <span>📋</span> Contracts
+              </button>
+              <button
                 onClick={() => navigateTo('AdminGiftCards')}
                 className="px-4 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors font-medium text-sm flex items-center gap-2"
               >

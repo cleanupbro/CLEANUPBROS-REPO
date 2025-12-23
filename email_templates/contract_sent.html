@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Service Contract from Clean Up Bros</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background-color: #f5f5f7;
+    }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+      background: linear-gradient(135deg, #0B2545 0%, #13315C 100%);
+      padding: 40px 30px;
+      text-align: center;
+    }
+    .logo {
+      font-size: 32px;
+      font-weight: bold;
+      background: linear-gradient(135deg, #F2B705 0%, #FFD700 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+    .tagline {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+    }
+    .content {
+      padding: 40px 30px;
+    }
+    .greeting {
+      font-size: 24px;
+      font-weight: 600;
+      color: #1d1d1f;
+      margin-bottom: 20px;
+    }
+    .message {
+      color: #515154;
+      line-height: 1.6;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    .contract-details {
+      background: #f5f5f7;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 30px 0;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+    .detail-label {
+      font-weight: 600;
+      color: #1d1d1f;
+    }
+    .detail-value {
+      color: #515154;
+      text-align: right;
+    }
+    .highlight {
+      background: linear-gradient(135deg, #F2B705 0%, #FFD700 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: bold;
+    }
+    .cta-button {
+      display: inline-block;
+      background: linear-gradient(135deg, #0071e3 0%, #00a6ff 100%);
+      color: white !important;
+      text-decoration: none;
+      padding: 15px 40px;
+      border-radius: 980px;
+      font-weight: 600;
+      margin: 20px 0;
+      text-align: center;
+    }
+    .next-steps {
+      background: #f9fafb;
+      border-left: 4px solid #F2B705;
+      padding: 20px;
+      margin: 30px 0;
+      border-radius: 8px;
+    }
+    .next-steps h3 {
+      margin: 0 0 15px 0;
+      color: #1d1d1f;
+      font-size: 18px;
+    }
+    .next-steps ol {
+      margin: 0;
+      padding-left: 20px;
+      color: #515154;
+    }
+    .next-steps li {
+      margin: 10px 0;
+    }
+    .footer {
+      background: #f5f5f7;
+      padding: 30px;
+      text-align: center;
+      color: #86868b;
+      font-size: 14px;
+    }
+    .contact-info {
+      margin: 20px 0;
+    }
+    .contact-info a {
+      color: #0071e3;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">✨ Clean Up Bros</div>
+      <div class="tagline">Sydney's Premier Cleaning Service</div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <div class="greeting">Hi {{clientName}}! 📋</div>
+
+      <div class="message">
+        Thank you for choosing <strong>Clean Up Bros</strong> for your long-term cleaning needs! We're excited to partner with you.
+      </div>
+
+      <div class="message">
+        Please find attached your service contract for <span class="highlight">{{contractType}}</span>. This contract outlines our professional cleaning services, payment terms, and service commitments.
+      </div>
+
+      <!-- Contract Details -->
+      <div class="contract-details">
+        <h3 style="margin-top: 0; color: #1d1d1f;">📄 Contract Summary</h3>
+        <div class="detail-row">
+          <span class="detail-label">Contract Number:</span>
+          <span class="detail-value">{{contractNumber}}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Service Type:</span>
+          <span class="detail-value">{{serviceDescription}}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Property:</span>
+          <span class="detail-value">{{propertyAddress}}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Contract Value:</span>
+          <span class="detail-value highlight">${{totalContractValue}}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Payment Schedule:</span>
+          <span class="detail-value">${{paymentAmount}} per {{paymentFrequency}}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Start Date:</span>
+          <span class="detail-value">{{startDate}}</span>
+        </div>
+        {{#if endDate}}
+        <div class="detail-row">
+          <span class="detail-label">End Date:</span>
+          <span class="detail-value">{{endDate}}</span>
+        </div>
+        {{/if}}
+        <div class="detail-row">
+          <span class="detail-label">Duration:</span>
+          <span class="detail-value">{{durationMonths}} months</span>
+        </div>
+      </div>
+
+      <!-- Next Steps -->
+      <div class="next-steps">
+        <h3>📝 Next Steps</h3>
+        <ol>
+          <li><strong>Review the contract</strong> - Please read through all terms and conditions carefully</li>
+          <li><strong>Download the PDF</strong> - Save a copy for your records using the button below</li>
+          <li><strong>Banking purposes</strong> - You can take this signed contract to your bank if needed</li>
+          <li><strong>Questions?</strong> - Contact us if you need any clarifications before signing</li>
+          <li><strong>We'll be in touch</strong> - Our team will contact you to finalize arrangements</li>
+        </ol>
+      </div>
+
+      <div style="text-align: center;">
+        <a href="{{pdfDownloadUrl}}" class="cta-button">📥 Download Contract PDF</a>
+      </div>
+
+      <div class="message" style="margin-top: 30px;">
+        <strong>Why This Contract Matters:</strong><br>
+        This legally binding agreement protects both parties and ensures clarity around service expectations, payment terms, and responsibilities. It's designed to give you peace of mind and establish a strong foundation for our partnership.
+      </div>
+
+      <div class="message" style="margin-top: 20px; padding: 15px; background: #e8f4fd; border-radius: 8px;">
+        💡 <strong>Pro Tip:</strong> Many property investors use this contract when seeking financing from banks or managing multiple properties. Keep it safe with your important documents!
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="contact-info">
+        📞 <a href="tel:+61406764585">+61 406 764 585</a><br>
+        ✉️ <a href="mailto:cleanupbros.au@gmail.com">cleanupbros.au@gmail.com</a><br>
+        🌐 <a href="https://cleanupbros.com.au">www.cleanupbros.com.au</a>
+      </div>
+
+      <div style="margin: 20px 0; padding-top: 20px; border-top: 1px solid #d2d2d7;">
+        Clean Up Bros - Sydney's #1 Cleaning Service<br>
+        Residential • Commercial • Airbnb • Post-Construction
+      </div>
+
+      <div style="font-size: 12px; color: #a1a1a6;">
+        © 2025 Clean Up Bros. All rights reserved.<br>
+        This is a legally binding contract. Please read all terms carefully.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

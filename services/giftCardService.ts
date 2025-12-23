@@ -3,7 +3,7 @@
  * Handles all gift card operations
  */
 
-import { supabase } from '../lib/supabase';
+import { supabase } from '../lib/supabaseClient';
 import { logGiftCardRedemption } from './googleSheetsService';
 
 export interface GiftCard {

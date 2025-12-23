@@ -19,6 +19,16 @@ API.md
 .env.production
 .env.staging
 
+# Google secrets and credentials
+**/google.secrects/
+**/*.json
+!package.json
+!package-lock.json
+!tsconfig.json
+!vite.config.ts
+!tailwind.config.ts
+!n8n_workflow_complete.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

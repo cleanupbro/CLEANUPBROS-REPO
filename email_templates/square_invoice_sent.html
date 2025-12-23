@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Invoice from Clean Up Bros</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background-color: #f5f5f7;
+    }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+      background: linear-gradient(135deg, #0B2545 0%, #13315C 100%);
+      padding: 40px 30px;
+      text-align: center;
+    }
+    .logo {
+      font-size: 32px;
+      font-weight: bold;
+      background: linear-gradient(135deg, #F2B705 0%, #FFD700 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+    .tagline {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+    }
+    .content {
+      padding: 40px 30px;
+    }
+    .greeting {
+      font-size: 24px;
+      font-weight: 600;
+      color: #1d1d1f;
+      margin-bottom: 20px;
+    }
+    .message {
+      color: #515154;
+      line-height: 1.6;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    .invoice-details {
+      background: #f5f5f7;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 30px 0;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+    .detail-label {
+      font-weight: 600;
+      color: #1d1d1f;
+    }
+    .detail-value {
+      color: #515154;
+      text-align: right;
+    }
+    .highlight {
+      background: linear-gradient(135deg, #F2B705 0%, #FFD700 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: bold;
+      font-size: 24px;
+    }
+    .cta-button {
+      display: inline-block;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white !important;
+      text-decoration: none;
+      padding: 18px 50px;
+      border-radius: 980px;
+      font-weight: 700;
+      margin: 20px 0;
+      text-align: center;
+      font-size: 18px;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+    }
+    .next-steps {
+      background: #f9fafb;
+      border-left: 4px solid #F2B705;
+      padding: 20px;
+      margin: 30px 0;
+      border-radius: 8px;
+    }
+    .next-steps h3 {
+      margin: 0 0 15px 0;
+      color: #1d1d1f;
+      font-size: 18px;
+    }
+    .next-steps ol {
+      margin: 0;
+      padding-left: 20px;
+      color: #515154;
+    }
+    .next-steps li {
+      margin: 10px 0;
+    }
+    .footer {
+      background: #f5f5f7;
+      padding: 30px;
+      text-align: center;
+      color: #86868b;
+      font-size: 14px;
+    }
+    .contact-info {
+      margin: 20px 0;
+    }
+    .contact-info a {
+      color: #0071e3;
+      text-decoration: none;
+    }
+    .payment-badge {
+      background: #10b981;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      display: inline-block;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">✨ Clean Up Bros</div>
+      <div class="tagline">Sydney's Premier Cleaning Service</div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <div class="greeting">Hi {{customerName}}! 💼</div>
+
+      <div class="message">
+        Thank you for choosing <strong>Clean Up Bros</strong> for your professional cleaning needs! Your invoice is ready for review and payment.
+      </div>
+
+      <div style="text-align: center; margin: 20px 0;">
+        <span class="payment-badge">💳 SECURE ONLINE PAYMENT</span>
+      </div>
+
+      <!-- Invoice Details -->
+      <div class="invoice-details">
+        <h3 style="margin-top: 0; color: #1d1d1f;">📄 Invoice Summary</h3>
+        <div class="detail-row">
+          <span class="detail-label">Invoice Number:</span>
+          <span class="detail-value">{{invoiceNumber}}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Service Description:</span>
+          <span class="detail-value">{{serviceDescription}}</span>
+        </div>
+        {{#if dueDate}}
+        <div class="detail-row">
+          <span class="detail-label">Due Date:</span>
+          <span class="detail-value">{{dueDate}}</span>
+        </div>
+        {{/if}}
+        <div class="detail-row" style="background: #f0fdf4; margin: 10px -10px; padding: 15px 10px;">
+          <span class="detail-label" style="font-size: 18px;">Total Amount:</span>
+          <span class="detail-value highlight">${{totalAmount}}</span>
+        </div>
+      </div>
+
+      <!-- Next Steps -->
+      <div class="next-steps">
+        <h3>✅ How to Pay & Accept Terms</h3>
+        <ol>
+          <li><strong>Review the invoice</strong> - Check all service details and pricing</li>
+          <li><strong>Read service terms</strong> - Review and accept the service agreement</li>
+          <li><strong>Sign electronically</strong> - Quick digital signature required</li>
+          <li><strong>Pay securely online</strong> - Credit card or bank transfer via Square</li>
+          <li><strong>Get instant confirmation</strong> - Receive payment receipt immediately</li>
+        </ol>
+      </div>
+
+      <div style="text-align: center;">
+        <a href="{{invoiceUrl}}" class="cta-button">💳 View Invoice & Pay Now</a>
+      </div>
+
+      <div class="message" style="margin-top: 30px; padding: 15px; background: #e8f4fd; border-radius: 8px;">
+        💡 <strong>Why Sign the Service Terms?</strong><br>
+        The service terms protect both you and Clean Up Bros. They outline what's included in your service, our quality standards, and both parties' responsibilities. It's quick and ensures a clear, professional agreement!
+      </div>
+
+      <div class="message" style="margin-top: 20px;">
+        <strong>Payment Options:</strong><br>
+        ✓ Credit Card (Visa, Mastercard, Amex)<br>
+        ✓ Debit Card<br>
+        ✓ Bank Transfer (ACH)<br>
+        ✓ 100% Secure via Square Payment Platform
+      </div>
+
+      <div class="message" style="margin-top: 30px; padding-top: 30px; border-top: 1px solid #e0e0e0;">
+        Questions about this invoice? Contact us anytime - we're here to help!
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="contact-info">
+        📞 <a href="tel:+61406764585">+61 406 764 585</a><br>
+        ✉️ <a href="mailto:cleanupbros.au@gmail.com">cleanupbros.au@gmail.com</a><br>
+        🌐 <a href="https://cleanupbros.com.au">www.cleanupbros.com.au</a>
+      </div>
+
+      <div style="margin: 20px 0; padding-top: 20px; border-top: 1px solid #d2d2d7;">
+        Clean Up Bros - Sydney's #1 Cleaning Service<br>
+        Residential • Commercial • Airbnb • Post-Construction
+      </div>
+
+      <div style="font-size: 12px; color: #a1a1a6;">
+        © 2025 Clean Up Bros. All rights reserved.<br>
+        This invoice is processed through Square - Secure & Encrypted
+      </div>
+    </div>
+  </div>
+</body>
+</html>

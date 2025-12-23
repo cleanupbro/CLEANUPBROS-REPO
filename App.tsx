@@ -23,6 +23,10 @@ const ServicesView = lazy(() => import('./views/ServicesView'));
 const CleanUpCardView = lazy(() => import('./views/CleanUpCardView'));
 const GiftCardPurchaseView = lazy(() => import('./views/GiftCardPurchaseView'));
 const AdminGiftCardsView = lazy(() => import('./views/AdminGiftCardsView'));
+const AirbnbContractView = lazy(() => import('./views/AirbnbContractView'));
+const BasicContractView = lazy(() => import('./views/BasicContractView'));
+const CommercialInvoiceView = lazy(() => import('./views/CommercialInvoiceView'));
+const AdminContractsView = lazy(() => import('./views/AdminContractsView'));
 
 // Loading component
 const LoadingSpinner = () => (
@@ -130,6 +134,26 @@ const App: React.FC = () => {
           return <AdminGiftCardsView />;
         }
         return <AdminLoginView onLoginSuccess={handleLoginSuccess} />;
+      case 'AirbnbContract':
+        if (isAdminLoggedIn && adminEmail) {
+          return <AirbnbContractView navigateTo={navigateTo} />;
+        }
+        return <AdminLoginView onLoginSuccess={handleLoginSuccess} />;
+      case 'BasicContract':
+        if (isAdminLoggedIn && adminEmail) {
+          return <BasicContractView navigateTo={navigateTo} />;
+        }
+        return <AdminLoginView onLoginSuccess={handleLoginSuccess} />;
+      case 'CommercialInvoice':
+        if (isAdminLoggedIn && adminEmail) {
+          return <CommercialInvoiceView navigateTo={navigateTo} />;
+        }
+        return <AdminLoginView onLoginSuccess={handleLoginSuccess} />;
+      case 'AdminContracts':
+        if (isAdminLoggedIn && adminEmail) {
+          return <AdminContractsView navigateTo={navigateTo} />;
+        }
+        return <AdminLoginView onLoginSuccess={handleLoginSuccess} />;
       case 'Landing':
       default:
         return <LandingView navigateTo={navigateTo} onSubmissionFail={handleSubmissionFail} />;
@@ -139,7 +163,7 @@ const App: React.FC = () => {
   return (
     <ToastProvider>
       <div className="min-h-screen flex flex-col font-sans antialiased">
-        <Header navigateTo={navigateTo} />
+        <Header navigateTo={navigateTo} isAdminLoggedIn={isAdminLoggedIn} onLogout={handleLogout} />
         <main className="flex-grow w-full pt-[48px]">
           <div className="container mx-auto px-4 py-8">
               <RetryBanner key={retryKey} />

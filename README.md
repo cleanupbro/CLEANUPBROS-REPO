@@ -356,12 +356,33 @@ npm run dev
 
 ---
 
+## 🎨 Recent Updates (v1.1.0 - December 23, 2025)
+
+**Major UI/UX Redesign** - All public pages redesigned with modern Apple-inspired aesthetic:
+
+- ✅ **Reviews Page** - Full-width hero, modern review cards, trust badges
+- ✅ **Gift Cards Page** - Enhanced purchase flow, benefits showcase, dark gradient summary
+- ✅ **About Page** - Animated story section, stats display, service areas
+- ✅ **Services Page** - Core services grid, add-ons section, process flow
+- ✅ **Contact Page** - Contact form, info cards, FAQ section
+
+**Design Highlights:**
+- Large, bold typography (text-5xl to text-7xl)
+- Apple-style cards with smooth hover animations
+- Professional color scheme (Gold #F2B705, Navy #1D1D1F)
+- Full-width hero sections with background images
+- Consistent gradient overlays and shadows
+
+See [CHANGELOG.md](CHANGELOG.md) for complete details.
+
+---
+
 ## ✨ Production Ready
 
 This is a **production-grade application** with enterprise features worth $15,000-$25,000 if built by an agency.
 
 **Status:** 🟢 Live on cleanupbros.com.au
-**Last Updated:** December 21, 2025
-**Version:** 1.0.0
+**Last Updated:** December 23, 2025
+**Version:** 1.1.0
 
 Made with ❤️ by Clean Up Bros Development Team
