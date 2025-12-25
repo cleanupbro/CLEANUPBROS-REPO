@@ -485,3 +485,5 @@ export const AdminGiftCardsView: React.FC = () => {
     </div>
   );
 };
+
+export default AdminGiftCardsView;

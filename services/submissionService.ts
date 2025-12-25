@@ -190,6 +190,37 @@ export const updateSubmissionScore = async (id: string, score: number, reasoning
   return updateSubmissionScoreInLocalStorage(id, score, reasoning);
 };
 
+// Update submission data (for editing customer details)
+export const updateSubmissionData = async (id: string, data: SubmissionData): Promise<Submission[]> => {
+  if (isSupabaseConfigured() && supabase) {
+    try {
+      const { error } = await supabase
+        .from('submissions')
+        .update({ data })
+        .eq('id', id);
+
+      if (error) {
+        console.error('Supabase update error:', error);
+        return updateSubmissionDataInLocalStorage(id, data);
+      }
+
+      return await getSubmissions();
+    } catch (error) {
+      console.error('Failed to update in Supabase:', error);
+      return updateSubmissionDataInLocalStorage(id, data);
+    }
+  }
+
+  return updateSubmissionDataInLocalStorage(id, data);
+};
+
+const updateSubmissionDataInLocalStorage = (id: string, data: SubmissionData): Submission[] => {
+  const submissions = getSubmissionsFromLocalStorage();
+  const updatedSubmissions = submissions.map(sub => sub.id === id ? { ...sub, data } : sub);
+  localStorage.setItem(SUBMISSIONS_KEY, JSON.stringify(updatedSubmissions));
+  return updatedSubmissions;
+};
+
 // ==================== LOCALSTORAGE FALLBACK FUNCTIONS ====================
 
 const getSubmissionsFromLocalStorage = (): Submission[] => {

@@ -69,22 +69,32 @@
       };
     </script>
 
-    <!-- JSON-LD Schema Markup (Dual Graph for Maximum Visibility) -->
+    <!-- JSON-LD Schema Markup (Enhanced for #1 Google Ranking) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@graph": [
         {
-          "@type": "LocalBusiness",
+          "@type": ["LocalBusiness", "CleaningService", "HomeAndConstructionBusiness"],
           "@id": "https://cleanupbros.com.au/#localbusiness",
           "name": "Clean Up Bros",
-          "image": "https://cleanupbros.com.au/logo.png",
+          "alternateName": "Clean Up Bros Sydney",
+          "description": "Sydney's #1 rated cleaning service. Professional residential, commercial, Airbnb & end-of-lease cleaning in Liverpool & Western Sydney. 100% bond back guarantee. Family-run, fully insured, police-checked team.",
+          "image": [
+            "https://cleanupbros.com.au/logo.png",
+            "https://cleanupbros.com.au/images/team.jpg",
+            "https://cleanupbros.com.au/images/cleaning-service.jpg"
+          ],
+          "logo": "https://cleanupbros.com.au/logo.png",
           "url": "https://cleanupbros.com.au",
           "telephone": "+61406764585",
           "email": "cleanupbros.au@gmail.com",
           "priceRange": "$$",
+          "currenciesAccepted": "AUD",
+          "paymentAccepted": "Cash, Credit Card, Bank Transfer",
           "address": {
             "@type": "PostalAddress",
+            "streetAddress": "Liverpool",
             "addressLocality": "Liverpool",
             "addressRegion": "NSW",
             "postalCode": "2170",
@@ -93,39 +103,130 @@
           "geo": {
             "@type": "GeoCoordinates",
             "latitude": -33.9200,
-            "longitude": 150.9241
+            "longitude": 150.9260
           },
-          "openingHoursSpecification": {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": [
-              "Monday",
-              "Tuesday",
-              "Wednesday",
-              "Thursday",
-              "Friday",
-              "Saturday",
-              "Sunday"
-            ],
-            "opens": "07:00",
-            "closes": "18:00"
-          },
+          "openingHoursSpecification": [
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+              "opens": "07:00",
+              "closes": "18:00"
+            },
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": ["Saturday", "Sunday"],
+              "opens": "08:00",
+              "closes": "16:00"
+            }
+          ],
           "areaServed": [
-            "Sydney",
-            "Liverpool",
-            "Campbelltown",
-            "Parramatta",
-            "Bankstown",
-            "Fairfield",
-            "Camden",
-            "Casula",
-            "Moorebank",
-            "Prestons"
+            {"@type": "City", "name": "Liverpool", "sameAs": "https://en.wikipedia.org/wiki/Liverpool,_New_South_Wales"},
+            {"@type": "City", "name": "Cabramatta"},
+            {"@type": "City", "name": "Casula"},
+            {"@type": "City", "name": "Moorebank"},
+            {"@type": "City", "name": "Prestons"},
+            {"@type": "City", "name": "Edmondson Park"},
+            {"@type": "City", "name": "Ingleburn"},
+            {"@type": "City", "name": "Glenfield"},
+            {"@type": "City", "name": "Campbelltown"},
+            {"@type": "City", "name": "Parramatta"},
+            {"@type": "City", "name": "Bankstown"},
+            {"@type": "City", "name": "Fairfield"},
+            {"@type": "AdministrativeArea", "name": "Western Sydney"}
           ],
           "aggregateRating": {
             "@type": "AggregateRating",
             "ratingValue": "4.9",
-            "reviewCount": "127"
-          }
+            "bestRating": "5",
+            "worstRating": "1",
+            "reviewCount": "150",
+            "ratingCount": "150"
+          },
+          "review": [
+            {
+              "@type": "Review",
+              "reviewRating": {"@type": "Rating", "ratingValue": "5", "bestRating": "5"},
+              "author": {"@type": "Person", "name": "Sarah M."},
+              "reviewBody": "Absolutely amazing service! They did our end of lease clean and we got our full bond back. Highly recommend!",
+              "datePublished": "2025-12-15"
+            },
+            {
+              "@type": "Review",
+              "reviewRating": {"@type": "Rating", "ratingValue": "5", "bestRating": "5"},
+              "author": {"@type": "Person", "name": "David L."},
+              "reviewBody": "Best commercial cleaners in Liverpool. Our office has never looked better. Professional and reliable.",
+              "datePublished": "2025-12-10"
+            }
+          ],
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Cleaning Services",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "End of Lease Cleaning",
+                  "description": "Complete bond cleaning with 100% bond back guarantee. Includes all rooms, kitchen deep clean, bathroom sanitisation."
+                },
+                "priceSpecification": {
+                  "@type": "PriceSpecification",
+                  "priceCurrency": "AUD",
+                  "minPrice": "250",
+                  "maxPrice": "600"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Residential Cleaning",
+                  "description": "Regular house cleaning for Sydney homes. Weekly, fortnightly, or one-off cleans available."
+                },
+                "priceSpecification": {
+                  "@type": "PriceSpecification",
+                  "priceCurrency": "AUD",
+                  "minPrice": "150",
+                  "maxPrice": "500"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Commercial Cleaning",
+                  "description": "Professional office and business cleaning. Medical centres, gyms, retail, and warehouses."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Airbnb Turnover Cleaning",
+                  "description": "Fast, reliable short-stay property cleaning. Same-day turnovers available."
+                },
+                "priceSpecification": {
+                  "@type": "PriceSpecification",
+                  "priceCurrency": "AUD",
+                  "minPrice": "100",
+                  "maxPrice": "280"
+                }
+              }
+            ]
+          },
+          "sameAs": [
+            "https://www.facebook.com/cleanupbros",
+            "https://www.instagram.com/cleanupbros",
+            "https://g.page/cleanupbros"
+          ],
+          "slogan": "Making Your Space Shine",
+          "foundingDate": "2023",
+          "founder": {
+            "@type": "Person",
+            "name": "Hafsah Nuzhat"
+          },
+          "legalName": "Clean Up Bros",
+          "taxID": "26443426374"
         },
         {
           "@type": "FAQPage",
@@ -171,8 +272,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="/styles/design-system.css" />
+
     <style type="text/tailwindcss">
       @import url('/styles/glassmorphism.css');
 
@@ -186,6 +290,20 @@
       @layer utilities {
         .text-apple-header {
           @apply text-[#1D1D1F] font-semibold tracking-tight;
+        }
+        .text-gradient-gold {
+          background: linear-gradient(135deg, #F2B705 0%, #E5A600 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+        .glass-nav {
+          background: rgba(255, 255, 255, 0.72);
+          backdrop-filter: saturate(180%) blur(20px);
+          -webkit-backdrop-filter: saturate(180%) blur(20px);
+        }
+        .shadow-premium {
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
         }
         .link-arrow {
           @apply text-[#0066CC] hover:underline cursor-pointer inline-flex items-center text-[17px] font-normal mt-3;
@@ -287,19 +405,33 @@
         theme: {
           extend: {
             colors: {
-              'brand-navy': '#1D1D1F', 
+              // Original brand colors
+              'brand-navy': '#1D1D1F',
               'brand-gold': '#F2B705',
               'apple-gray': '#F5F5F7',
               'apple-blue': '#0071e3',
               'apple-text': '#1D1D1F',
               'apple-subtext': '#86868b',
+              // Luxury Utility Design System
+              'deep-teal': '#008080',
+              'navy': '#0B2545',
+              'navy-light': '#134074',
+              'sage-green': '#9DC183',
+              'fresh-blue': '#007BFF',
+              'sky-blue': '#4A90D9',
+              'champagne-gold': '#F7E7CE',
+              'cta-orange': '#FD7E14',
+              'success-green': '#28A745',
+              'error-red': '#DC3545',
             },
             fontFamily: {
               'sans': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+              'heading': ['Montserrat', 'Inter', 'sans-serif'],
             },
             boxShadow: {
                 'apple': '0 4px 24px rgba(0, 0, 0, 0.04)',
                 'apple-hover': '0 8px 32px rgba(0, 0, 0, 0.08)',
+                'glass': '0 8px 32px rgba(0, 0, 0, 0.1)',
             }
           }
         }

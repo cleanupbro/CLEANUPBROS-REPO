@@ -492,3 +492,5 @@ export const GiftCardPurchaseView: React.FC<NavigationProps> = ({ navigateTo }) 
     </div>
   );
 };
+
+export default GiftCardPurchaseView;

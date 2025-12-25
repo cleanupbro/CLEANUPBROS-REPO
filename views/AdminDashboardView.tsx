@@ -1,9 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { getSubmissions, updateSubmissionStatus } from '../services/submissionService';
-import { Submission, SubmissionStatus, SubmissionType, ServiceType, ViewType } from '../types';
+import { Submission, SubmissionStatus, SubmissionType, ServiceType, ViewType, PipelineStage } from '../types';
 import { SubmissionCard } from '../components/SubmissionCard';
 import AdminChatBot from '../components/AdminChatBot';
 import { supabase, isSupabaseConfigured } from '../lib/supabaseClient';
+import { PipelineBoard } from '../components/admin/PipelineBoard';
+import { CalendarView } from '../components/admin/CalendarView';
+import { InvoiceGenerator } from '../components/admin/InvoiceGenerator';
+import { CustomerHistory } from '../components/admin/CustomerHistory';
+import { EmailTemplates } from '../components/admin/EmailTemplates';
 
 interface AdminDashboardViewProps {
   onLogout: () => void;
@@ -20,7 +25,7 @@ const FILTERS: { label: string, type: SubmissionType | 'All', icon: string }[] =
     { label: 'Job Apps', type: ServiceType.Jobs, icon: '💼' },
 ];
 
-// Metric Card Component
+// Premium Metric Card Component - HubSpot/Salesforce Style
 const MetricCard: React.FC<{
   title: string;
   value: string | number;
@@ -28,30 +33,39 @@ const MetricCard: React.FC<{
   trend?: string;
   trendUp?: boolean;
   color?: string;
-}> = ({ title, value, icon, trend, trendUp, color = 'blue' }) => {
+  subtitle?: string;
+}> = ({ title, value, icon, trend, trendUp, color = 'blue', subtitle }) => {
   const colors = {
-    blue: 'from-blue-500 to-blue-600',
-    green: 'from-green-500 to-green-600',
+    blue: 'from-sky-blue to-fresh-blue',
+    green: 'from-success-green to-emerald-600',
     purple: 'from-purple-500 to-purple-600',
-    orange: 'from-orange-500 to-orange-600',
-    gold: 'from-yellow-500 to-yellow-600',
+    orange: 'from-cta-orange to-orange-600',
+    gold: 'from-amber-400 to-amber-600',
+    navy: 'from-navy to-navy-light',
+    teal: 'from-deep-teal to-teal-600',
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 border border-gray-100">
-      <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <p className="text-sm font-medium text-gray-600 mb-1">{title}</p>
-          <p className="text-3xl font-bold text-gray-900">{value}</p>
-          {trend && (
-            <div className={`flex items-center mt-2 text-sm font-semibold ${trendUp ? 'text-green-600' : 'text-red-600'}`}>
-              <span className="mr-1">{trendUp ? '↗' : '↘'}</span>
-              {trend}
-            </div>
-          )}
-        </div>
-        <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${colors[color as keyof typeof colors] || colors.blue} flex items-center justify-center text-3xl shadow-lg`}>
-          {icon}
+    <div className="relative overflow-hidden bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+      {/* Gradient accent bar */}
+      <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${colors[color as keyof typeof colors] || colors.blue}`} />
+
+      <div className="p-6">
+        <div className="flex items-start justify-between">
+          <div className="flex-1">
+            <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-1">{title}</p>
+            <p className="text-4xl font-bold text-gray-900 tracking-tight">{value}</p>
+            {subtitle && <p className="text-xs text-gray-400 mt-1">{subtitle}</p>}
+            {trend && (
+              <div className={`inline-flex items-center mt-3 px-2.5 py-1 rounded-full text-xs font-bold ${trendUp ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                <span className="mr-1">{trendUp ? '↑' : '↓'}</span>
+                {trend}
+              </div>
+            )}
+          </div>
+          <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${colors[color as keyof typeof colors] || colors.blue} flex items-center justify-center text-3xl shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+            {icon}
+          </div>
         </div>
       </div>
     </div>
@@ -85,11 +99,14 @@ const MiniBarChart: React.FC<{ data: { label: string; value: number; color: stri
   );
 };
 
+type TabType = 'overview' | 'submissions' | 'pipeline' | 'calendar' | 'invoices' | 'customers' | 'templates' | 'chat';
+
 const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onLogout, adminEmail, navigateTo }) => {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [activeFilter, setActiveFilter] = useState<SubmissionType | 'All'>('All');
-  const [activeTab, setActiveTab] = useState<'overview' | 'submissions' | 'chat'>('overview');
+  const [activeTab, setActiveTab] = useState<TabType>('overview');
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedSubmission, setSelectedSubmission] = useState<Submission | null>(null);
 
   useEffect(() => {
     const loadSubmissions = async () => {
@@ -126,6 +143,20 @@ const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onLogout, admin
 
   const handleSubmissionsUpdate = (updatedSubmissions: Submission[]) => {
       setSubmissions(updatedSubmissions);
+  };
+
+  const handlePipelineStageUpdate = (submissionId: string, newStage: PipelineStage) => {
+    setSubmissions(prev => prev.map(s =>
+      s.id === submissionId
+        ? { ...s, pipelineStage: newStage, pipelineUpdatedAt: new Date().toISOString() }
+        : s
+    ));
+  };
+
+  const handleViewSubmission = (submission: Submission) => {
+    setSelectedSubmission(submission);
+    setActiveTab('submissions');
+    setSearchQuery(submission.id);
   };
 
   // Calculate metrics
@@ -252,38 +283,52 @@ const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onLogout, admin
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Top Navigation Bar */}
-      <div className="bg-white border-b border-gray-200 sticky top-12 z-40">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Premium Top Navigation Bar */}
+      <div className="bg-white/80 backdrop-blur-lg border-b border-gray-200/50 sticky top-12 z-40 shadow-sm">
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-              <p className="text-sm text-gray-600 mt-1">Welcome back, {adminEmail}</p>
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-navy to-navy-light flex items-center justify-center shadow-lg">
+                <span className="text-2xl">📊</span>
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-navy to-deep-teal bg-clip-text text-transparent">Command Center</h1>
+                <p className="text-sm text-gray-500">Welcome back, <span className="font-semibold text-gray-700">{adminEmail}</span></p>
+              </div>
             </div>
-            <div className="flex items-center gap-3">
+
+            {/* Quick Actions */}
+            <div className="flex items-center gap-2">
+              {/* Quick Add Button */}
+              <button className="w-10 h-10 rounded-xl bg-gradient-to-br from-cta-orange to-orange-600 text-white flex items-center justify-center shadow-md hover:shadow-lg hover:scale-105 transition-all">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+              </button>
+
               <button
                 onClick={() => navigateTo('AdminContracts')}
-                className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors font-medium text-sm flex items-center gap-2"
+                className="px-4 py-2.5 bg-white border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all font-medium text-sm flex items-center gap-2 shadow-sm"
               >
                 <span>📋</span> Contracts
               </button>
               <button
                 onClick={() => navigateTo('AdminGiftCards')}
-                className="px-4 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors font-medium text-sm flex items-center gap-2"
+                className="px-4 py-2.5 bg-gradient-to-r from-success-green to-emerald-600 text-white rounded-xl hover:shadow-lg transition-all font-medium text-sm flex items-center gap-2 shadow-sm"
               >
                 <span>🎁</span> Gift Cards
               </button>
               <button
                 onClick={handleExportCSV}
-                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium text-sm flex items-center gap-2"
+                className="px-4 py-2.5 bg-white border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 transition-all font-medium text-sm flex items-center gap-2 shadow-sm"
                 disabled={filteredSubmissions.length === 0}
               >
-                <span>📥</span> Export CSV
+                <span>📥</span> Export
               </button>
               <button
                 onClick={onLogout}
-                className="px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors font-medium text-sm flex items-center gap-2"
+                className="px-4 py-2.5 bg-red-50 border border-red-100 text-red-600 rounded-xl hover:bg-red-100 transition-all font-medium text-sm flex items-center gap-2"
               >
                 <span>🚪</span> Logout
               </button>
@@ -291,10 +336,10 @@ const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onLogout, admin
           </div>
 
           {/* Tab Navigation */}
-          <div className="flex gap-6 mt-4 border-b border-gray-200 -mb-px">
+          <div className="flex gap-4 mt-4 border-b border-gray-200 -mb-px overflow-x-auto">
             <button
               onClick={() => setActiveTab('overview')}
-              className={`pb-3 px-1 font-semibold text-sm border-b-2 transition-colors ${
+              className={`pb-3 px-1 font-semibold text-sm border-b-2 transition-colors whitespace-nowrap ${
                 activeTab === 'overview'
                   ? 'border-brand-gold text-brand-navy'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
@@ -303,8 +348,28 @@ const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onLogout, admin
               📊 Overview
             </button>
             <button
+              onClick={() => setActiveTab('pipeline')}
+              className={`pb-3 px-1 font-semibold text-sm border-b-2 transition-colors whitespace-nowrap ${
+                activeTab === 'pipeline'
+                  ? 'border-brand-gold text-brand-navy'
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              🎯 Pipeline
+            </button>
+            <button
+              onClick={() => setActiveTab('calendar')}
+              className={`pb-3 px-1 font-semibold text-sm border-b-2 transition-colors whitespace-nowrap ${
+                activeTab === 'calendar'
+                  ? 'border-brand-gold text-brand-navy'
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              📅 Calendar
+            </button>
+            <button
               onClick={() => setActiveTab('submissions')}
-              className={`pb-3 px-1 font-semibold text-sm border-b-2 transition-colors ${
+              className={`pb-3 px-1 font-semibold text-sm border-b-2 transition-colors whitespace-nowrap ${
                 activeTab === 'submissions'
                   ? 'border-brand-gold text-brand-navy'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
@@ -313,14 +378,44 @@ const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onLogout, admin
               📋 Submissions ({submissions.length})
             </button>
             <button
+              onClick={() => setActiveTab('customers')}
+              className={`pb-3 px-1 font-semibold text-sm border-b-2 transition-colors whitespace-nowrap ${
+                activeTab === 'customers'
+                  ? 'border-brand-gold text-brand-navy'
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              👥 Customers
+            </button>
+            <button
+              onClick={() => setActiveTab('invoices')}
+              className={`pb-3 px-1 font-semibold text-sm border-b-2 transition-colors whitespace-nowrap ${
+                activeTab === 'invoices'
+                  ? 'border-brand-gold text-brand-navy'
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              🧾 Invoices
+            </button>
+            <button
+              onClick={() => setActiveTab('templates')}
+              className={`pb-3 px-1 font-semibold text-sm border-b-2 transition-colors whitespace-nowrap ${
+                activeTab === 'templates'
+                  ? 'border-brand-gold text-brand-navy'
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              📧 Templates
+            </button>
+            <button
               onClick={() => setActiveTab('chat')}
-              className={`pb-3 px-1 font-semibold text-sm border-b-2 transition-colors ${
+              className={`pb-3 px-1 font-semibold text-sm border-b-2 transition-colors whitespace-nowrap ${
                 activeTab === 'chat'
                   ? 'border-brand-gold text-brand-navy'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
-              💬 Live Chat
+              💬 AI Chat
             </button>
           </div>
         </div>
@@ -500,6 +595,51 @@ const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onLogout, admin
                 </div>
               )}
             </div>
+          </div>
+        )}
+
+        {/* Pipeline Tab */}
+        {activeTab === 'pipeline' && (
+          <div className="animate-fade-in-up">
+            <PipelineBoard
+              submissions={submissions}
+              onUpdateStage={handlePipelineStageUpdate}
+              onViewSubmission={handleViewSubmission}
+            />
+          </div>
+        )}
+
+        {/* Calendar Tab */}
+        {activeTab === 'calendar' && (
+          <div className="animate-fade-in-up">
+            <CalendarView
+              submissions={submissions}
+              onViewSubmission={handleViewSubmission}
+            />
+          </div>
+        )}
+
+        {/* Customers Tab */}
+        {activeTab === 'customers' && (
+          <div className="animate-fade-in-up">
+            <CustomerHistory
+              submissions={submissions}
+              onViewSubmission={handleViewSubmission}
+            />
+          </div>
+        )}
+
+        {/* Invoices Tab */}
+        {activeTab === 'invoices' && (
+          <div className="animate-fade-in-up">
+            <InvoiceGenerator submissions={submissions} />
+          </div>
+        )}
+
+        {/* Email Templates Tab */}
+        {activeTab === 'templates' && (
+          <div className="animate-fade-in-up">
+            <EmailTemplates submissions={submissions} />
           </div>
         )}
 

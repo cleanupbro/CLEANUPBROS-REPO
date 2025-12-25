@@ -100,6 +100,11 @@ export interface CreateContractData {
  */
 export const generateContractNumber = async (): Promise<string> => {
   try {
+    if (!supabase) {
+      // Fallback to timestamp-based number if Supabase not configured
+      return `CUB-${new Date().getFullYear().toString().slice(-2)}-${Date.now().toString().slice(-6)}`;
+    }
+
     const { data, error } = await supabase.rpc('generate_contract_number');
 
     if (error) throw error;
@@ -119,6 +124,10 @@ export const createContract = async (
   data: CreateContractData
 ): Promise<{ success: boolean; contract?: ServiceContract; error?: string }> => {
   try {
+    if (!supabase) {
+      return { success: false, error: 'Database not configured' };
+    }
+
     const contractNumber = await generateContractNumber();
 
     const contractData = {
@@ -154,6 +163,10 @@ export const getContract = async (
   contractId: string
 ): Promise<{ success: boolean; contract?: ServiceContract; error?: string }> => {
   try {
+    if (!supabase) {
+      return { success: false, error: 'Database not configured' };
+    }
+
     const { data, error } = await supabase
       .from('service_contracts')
       .select('*')
@@ -179,6 +192,8 @@ export const getAllContracts = async (
   status?: ServiceContract['status']
 ): Promise<ServiceContract[]> => {
   try {
+    if (!supabase) return [];
+
     let query = supabase
       .from('service_contracts')
       .select('*')
@@ -207,6 +222,10 @@ export const updateContract = async (
   updates: Partial<ServiceContract>
 ): Promise<{ success: boolean; contract?: ServiceContract; error?: string }> => {
   try {
+    if (!supabase) {
+      return { success: false, error: 'Database not configured' };
+    }
+
     const { data, error } = await supabase
       .from('service_contracts')
       .update(updates)
@@ -235,6 +254,10 @@ export const signContract = async (
   ipAddress?: string
 ): Promise<{ success: boolean; error?: string }> => {
   try {
+    if (!supabase) {
+      return { success: false, error: 'Database not configured' };
+    }
+
     const updates = {
       client_signature_data: signatureData,
       client_signed_at: new Date().toISOString(),
@@ -493,6 +516,10 @@ export const downloadContractPDF = (contract: ServiceContract, filename?: string
  */
 export const getContractStats = async () => {
   try {
+    if (!supabase) {
+      return { total: 0, active: 0, draft: 0, signed: 0, totalValue: 0 };
+    }
+
     const { data: contracts, error } = await supabase
       .from('service_contracts')
       .select('*');

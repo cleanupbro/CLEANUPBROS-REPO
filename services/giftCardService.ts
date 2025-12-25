@@ -98,6 +98,15 @@ export const purchaseGiftCard = async (
   data: PurchaseGiftCardData
 ): Promise<{ success: boolean; giftCard?: GiftCard; error?: string }> => {
   try {
+    // Check if Supabase is configured
+    if (!supabase) {
+      console.warn('Supabase not configured - gift card purchase unavailable');
+      return {
+        success: false,
+        error: 'Gift card system is temporarily unavailable. Please contact us directly.',
+      };
+    }
+
     const code = generateGiftCardCode();
     const bonusAmount = calculateBonus(data.amount);
     const totalValue = data.amount + bonusAmount;
@@ -141,6 +150,10 @@ export const activateGiftCard = async (
   giftCardId: string
 ): Promise<{ success: boolean; error?: string }> => {
   try {
+    if (!supabase) {
+      return { success: false, error: 'Database not configured' };
+    }
+
     // Update gift card status to active
     const { data: giftCard, error: updateError } = await supabase
       .from('gift_cards')
@@ -185,6 +198,10 @@ export const verifyGiftCard = async (
   code: string
 ): Promise<{ success: boolean; giftCard?: GiftCard; error?: string }> => {
   try {
+    if (!supabase) {
+      return { success: false, error: 'Database not configured' };
+    }
+
     const { data, error } = await supabase
       .from('gift_cards')
       .select('*')
@@ -224,6 +241,10 @@ export const redeemGiftCard = async (
   data: RedeemGiftCardData
 ): Promise<{ success: boolean; amountApplied?: number; newBalance?: number; error?: string }> => {
   try {
+    if (!supabase) {
+      return { success: false, error: 'Database not configured' };
+    }
+
     // First verify the gift card
     const verification = await verifyGiftCard(data.code);
     if (!verification.success || !verification.giftCard) {
@@ -280,9 +301,7 @@ export const redeemGiftCard = async (
       amountRedeemed: amountToApply,
       remainingBalance: newBalance,
       bookingTotal: data.amountToRedeem,
-      customerName: data.customerName,
       customerEmail: data.customerEmail,
-      serviceType: data.serviceType,
     }, data.submissionId).catch(err => console.warn('Google Sheets logging failed:', err));
 
     return {
@@ -306,6 +325,8 @@ export const getGiftCardByCode = async (
   code: string
 ): Promise<GiftCard | null> => {
   try {
+    if (!supabase) return null;
+
     const { data, error } = await supabase
       .from('gift_cards')
       .select('*')
@@ -327,6 +348,8 @@ export const getAllGiftCards = async (
   filter?: 'all' | 'active' | 'redeemed' | 'pending'
 ): Promise<GiftCard[]> => {
   try {
+    if (!supabase) return [];
+
     let query = supabase
       .from('gift_cards')
       .select('*')
@@ -352,6 +375,8 @@ export const getGiftCardTransactions = async (
   giftCardId: string
 ): Promise<GiftCardTransaction[]> => {
   try {
+    if (!supabase) return [];
+
     const { data, error } = await supabase
       .from('gift_card_transactions')
       .select('*')
@@ -373,6 +398,8 @@ export const getCustomerCredit = async (
   email: string
 ): Promise<CustomerCredit | null> => {
   try {
+    if (!supabase) return null;
+
     const { data, error } = await supabase
       .from('customer_credit')
       .select('*')
@@ -398,6 +425,16 @@ export const getGiftCardStats = async (): Promise<{
   pendingCards: number;
 }> => {
   try {
+    if (!supabase) {
+      return {
+        totalSold: 0,
+        totalActiveBalance: 0,
+        activeCards: 0,
+        redeemedCards: 0,
+        pendingCards: 0,
+      };
+    }
+
     const { data, error } = await supabase
       .from('gift_card_summary')
       .select('*')

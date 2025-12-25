@@ -15,6 +15,14 @@ export enum SubmissionStatus {
   Canceled = 'Canceled',
 }
 
+export enum PipelineStage {
+  New = 'New',
+  Contacted = 'Contacted',
+  Quoted = 'Quoted',
+  Booked = 'Booked',
+  Completed = 'Completed',
+}
+
 export type SubmissionType = ServiceType | 'Landing Lead';
 
 export interface Submission {
@@ -26,6 +34,57 @@ export interface Submission {
   summary?: string;
   leadScore?: number;
   leadReasoning?: string;
+  pipelineStage?: PipelineStage;
+  pipelineUpdatedAt?: string;
+}
+
+// Email Template Types
+export interface EmailTemplate {
+  id: string;
+  name: string;
+  subject: string;
+  body: string;
+  category: 'quote_follow_up' | 'booking_confirmation' | 'reminder' | 'thank_you' | 'custom';
+  placeholders?: { key: string; label: string }[];
+  created_at?: string;
+  updated_at?: string;
+}
+
+// Customer Notes Types
+export interface CustomerNote {
+  id: string;
+  customer_email: string;
+  note: string;
+  note_type: 'call' | 'email' | 'meeting' | 'internal';
+  created_by?: string;
+  created_at: string;
+}
+
+// Invoice Types
+export interface Invoice {
+  id: string;
+  submission_id: string;
+  invoice_number: string;
+  customer_name: string;
+  customer_email: string;
+  customer_phone?: string;
+  items: InvoiceItem[];
+  subtotal: number;
+  tax: number;
+  total: number;
+  status: 'draft' | 'sent' | 'paid' | 'overdue' | 'cancelled';
+  due_date?: string;
+  paid_at?: string;
+  square_invoice_id?: string;
+  pdf_url?: string;
+  created_at: string;
+}
+
+export interface InvoiceItem {
+  description: string;
+  quantity: number;
+  unit_price: number;
+  total: number;
 }
 
 export type ViewType = ServiceType | 'Landing' | 'Success' | 'AdminLogin' | 'AdminDashboard' | 'ClientFeedback' | 'About' | 'Reviews' | 'Contact' | 'Services' | 'CleanUpCard' | 'GiftCardPurchase' | 'AdminGiftCards' | 'AirbnbContract' | 'BasicContract' | 'CommercialInvoice' | 'AdminContracts';
