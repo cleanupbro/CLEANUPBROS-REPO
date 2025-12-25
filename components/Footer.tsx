@@ -30,6 +30,7 @@ export const Footer: React.FC<{ navigateTo: (view: ViewType) => void }> = ({ nav
             <h4 className="font-semibold text-[#1D1D1F] mb-3">More</h4>
             <ul className="space-y-2 text-[#86868b]">
               <li><button onClick={() => navigateTo('GiftCardPurchase')} className="hover:text-[#0071e3] transition-colors">Gift Cards</button></li>
+              <li><button onClick={() => navigateTo('CheckBalance')} className="hover:text-[#0071e3] transition-colors">Check Balance</button></li>
               <li><button onClick={() => navigateTo('ClientFeedback')} className="hover:text-[#0071e3] transition-colors">Feedback</button></li>
               <li><a href="tel:+61406764585" className="hover:text-[#0071e3] transition-colors">Call Us</a></li>
             </ul>

@@ -27,6 +27,7 @@ const AirbnbContractView = lazy(() => import('./views/AirbnbContractView'));
 const BasicContractView = lazy(() => import('./views/BasicContractView'));
 const CommercialInvoiceView = lazy(() => import('./views/CommercialInvoiceView'));
 const AdminContractsView = lazy(() => import('./views/AdminContractsView'));
+const CheckBalanceView = lazy(() => import('./views/CheckBalanceView'));
 
 // Loading component
 const LoadingSpinner = () => (
@@ -129,6 +130,8 @@ const App: React.FC = () => {
         return <CleanUpCardView navigateTo={navigateTo} />;
       case 'GiftCardPurchase':
         return <GiftCardPurchaseView navigateTo={navigateTo} />;
+      case 'CheckBalance':
+        return <CheckBalanceView navigateTo={navigateTo} />;
       case 'AdminGiftCards':
         if (isAdminLoggedIn && adminEmail) {
           return <AdminGiftCardsView />;

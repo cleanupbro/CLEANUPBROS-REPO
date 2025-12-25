@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { getSubmissions, updateSubmissionStatus } from '../services/submissionService';
 import { Submission, SubmissionStatus, SubmissionType, ServiceType, ViewType, PipelineStage } from '../types';
 import { SubmissionCard } from '../components/SubmissionCard';
-import AdminChatBot from '../components/AdminChatBot';
 import { supabase, isSupabaseConfigured } from '../lib/supabaseClient';
 import { PipelineBoard } from '../components/admin/PipelineBoard';
 import { CalendarView } from '../components/admin/CalendarView';
@@ -99,7 +98,7 @@ const MiniBarChart: React.FC<{ data: { label: string; value: number; color: stri
   );
 };
 
-type TabType = 'overview' | 'submissions' | 'pipeline' | 'calendar' | 'invoices' | 'customers' | 'templates' | 'chat';
+type TabType = 'overview' | 'submissions' | 'pipeline' | 'calendar' | 'invoices' | 'customers' | 'templates';
 
 const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onLogout, adminEmail, navigateTo }) => {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
@@ -287,56 +286,49 @@ const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onLogout, admin
       {/* Premium Top Navigation Bar */}
       <div className="bg-white/80 backdrop-blur-lg border-b border-gray-200/50 sticky top-12 z-40 shadow-sm">
         <div className="px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-navy to-navy-light flex items-center justify-center shadow-lg">
-                <span className="text-2xl">📊</span>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gradient-to-br from-navy to-navy-light flex items-center justify-center shadow-lg flex-shrink-0">
+                <span className="text-xl md:text-2xl">📊</span>
               </div>
-              <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-navy to-deep-teal bg-clip-text text-transparent">Command Center</h1>
-                <p className="text-sm text-gray-500">Welcome back, <span className="font-semibold text-gray-700">{adminEmail}</span></p>
+              <div className="min-w-0">
+                <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-navy to-deep-teal bg-clip-text text-transparent truncate">Command Center</h1>
+                <p className="text-xs md:text-sm text-gray-500 truncate">Welcome, <span className="font-semibold text-gray-700">{adminEmail?.split('@')[0]}</span></p>
               </div>
             </div>
 
-            {/* Quick Actions */}
-            <div className="flex items-center gap-2">
-              {/* Quick Add Button */}
-              <button className="w-10 h-10 rounded-xl bg-gradient-to-br from-cta-orange to-orange-600 text-white flex items-center justify-center shadow-md hover:shadow-lg hover:scale-105 transition-all">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                </svg>
-              </button>
-
-              <button
-                onClick={() => navigateTo('AdminContracts')}
-                className="px-4 py-2.5 bg-white border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all font-medium text-sm flex items-center gap-2 shadow-sm"
-              >
-                <span>📋</span> Contracts
-              </button>
+            {/* Quick Actions - Scrollable on mobile */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 -mx-2 px-2 md:mx-0 md:px-0">
               <button
                 onClick={() => navigateTo('AdminGiftCards')}
-                className="px-4 py-2.5 bg-gradient-to-r from-success-green to-emerald-600 text-white rounded-xl hover:shadow-lg transition-all font-medium text-sm flex items-center gap-2 shadow-sm"
+                className="px-3 py-2 md:px-4 md:py-2.5 bg-gradient-to-r from-success-green to-emerald-600 text-white rounded-xl hover:shadow-lg transition-all font-medium text-xs md:text-sm flex items-center gap-1 md:gap-2 shadow-sm whitespace-nowrap flex-shrink-0"
               >
-                <span>🎁</span> Gift Cards
+                <span>🎁</span> <span className="hidden sm:inline">Gift Cards</span>
+              </button>
+              <button
+                onClick={() => navigateTo('AdminContracts')}
+                className="px-3 py-2 md:px-4 md:py-2.5 bg-white border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 transition-all font-medium text-xs md:text-sm flex items-center gap-1 md:gap-2 shadow-sm whitespace-nowrap flex-shrink-0"
+              >
+                <span>📋</span> <span className="hidden sm:inline">Contracts</span>
               </button>
               <button
                 onClick={handleExportCSV}
-                className="px-4 py-2.5 bg-white border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 transition-all font-medium text-sm flex items-center gap-2 shadow-sm"
+                className="px-3 py-2 md:px-4 md:py-2.5 bg-white border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 transition-all font-medium text-xs md:text-sm flex items-center gap-1 md:gap-2 shadow-sm whitespace-nowrap flex-shrink-0"
                 disabled={filteredSubmissions.length === 0}
               >
-                <span>📥</span> Export
+                <span>📥</span> <span className="hidden sm:inline">Export</span>
               </button>
               <button
                 onClick={onLogout}
-                className="px-4 py-2.5 bg-red-50 border border-red-100 text-red-600 rounded-xl hover:bg-red-100 transition-all font-medium text-sm flex items-center gap-2"
+                className="px-3 py-2 md:px-4 md:py-2.5 bg-red-50 border border-red-100 text-red-600 rounded-xl hover:bg-red-100 transition-all font-medium text-xs md:text-sm flex items-center gap-1 md:gap-2 whitespace-nowrap flex-shrink-0"
               >
-                <span>🚪</span> Logout
+                <span>🚪</span> <span className="hidden sm:inline">Logout</span>
               </button>
             </div>
           </div>
 
-          {/* Tab Navigation */}
-          <div className="flex gap-4 mt-4 border-b border-gray-200 -mb-px overflow-x-auto">
+          {/* Tab Navigation - Scrollable on mobile */}
+          <div className="flex gap-2 md:gap-4 mt-4 border-b border-gray-200 -mb-px overflow-x-auto scrollbar-hide -mx-6 px-6">
             <button
               onClick={() => setActiveTab('overview')}
               className={`pb-3 px-1 font-semibold text-sm border-b-2 transition-colors whitespace-nowrap ${
@@ -407,27 +399,17 @@ const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onLogout, admin
             >
               📧 Templates
             </button>
-            <button
-              onClick={() => setActiveTab('chat')}
-              className={`pb-3 px-1 font-semibold text-sm border-b-2 transition-colors whitespace-nowrap ${
-                activeTab === 'chat'
-                  ? 'border-brand-gold text-brand-navy'
-                  : 'border-transparent text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              💬 AI Chat
-            </button>
-          </div>
+                      </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="p-6">
+      <div className="p-4 md:p-6">
         {/* Overview Tab */}
         {activeTab === 'overview' && (
           <div className="space-y-6 animate-fade-in-up">
             {/* Metrics Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6">
               <MetricCard
                 title="Total Submissions"
                 value={metrics.total}
@@ -643,13 +625,7 @@ const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ onLogout, admin
           </div>
         )}
 
-        {/* Chat Tab */}
-        {activeTab === 'chat' && (
-          <div className="animate-fade-in-up">
-            <AdminChatBot adminEmail={adminEmail} activeFilter={activeFilter} />
-          </div>
-        )}
-      </div>
+              </div>
     </div>
   );
 };

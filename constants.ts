@@ -13,8 +13,9 @@ export const WEBHOOK_URLS = {
   BOOKING_CONFIRMATION: 'https://nioctibinu.online/webhook/booking-confirmation',
   SQUARE_PAYMENT_LINK: 'https://nioctibinu.online/webhook/create-payment-link',
 
-  // Gift Card System
+  // Gift Card System (N8N Workflow: dc6bCOR1yqmyO1YK)
   GIFT_CARD_PURCHASE: 'https://nioctibinu.online/webhook/gift-card-purchase',
+  GIFT_CARD_PAYMENT_COMPLETE: 'https://nioctibinu.online/webhook/gift-card-payment-complete',
   GIFT_CARD_ACTIVATION: 'https://nioctibinu.online/webhook/gift-card-activation',
   GIFT_CARD_REDEMPTION: 'https://nioctibinu.online/webhook/gift-card-redemption',
 

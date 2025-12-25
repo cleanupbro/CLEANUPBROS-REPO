@@ -102,16 +102,6 @@ export const GiftCardPurchaseView: React.FC<NavigationProps> = ({ navigateTo }) 
         return;
       }
 
-      // Send to n8n for tracking
-      await fetch(WEBHOOK_URLS.GIFT_CARD_PURCHASE, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...result.giftCard,
-          timestamp: new Date().toISOString(),
-        }),
-      }).catch(err => console.warn('Webhook failed:', err));
-
       // Log to Google Sheets for backup
       logGiftCardPurchase({
         ...result.giftCard,
@@ -119,24 +109,47 @@ export const GiftCardPurchaseView: React.FC<NavigationProps> = ({ navigateTo }) 
         purchaserEmail,
       }, result.giftCard.id).catch(err => console.warn('Google Sheets logging failed:', err));
 
-      // Create Square payment link
-      const paymentData: PaymentLinkData = {
-        customerName: purchaserName,
-        customerEmail: purchaserEmail,
-        serviceType: 'Gift Card',
-        amount: amount,
-        referenceId: result.giftCard.id,
-        description: `Clean Up Bros Gift Card - $${totalValue} total value (includes 15% bonus)`,
-      };
+      // Send to N8N to create Square payment link and send email
+      const webhookResponse = await fetch(WEBHOOK_URLS.GIFT_CARD_PURCHASE, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...result.giftCard,
+          purchaserName,
+          purchaserEmail,
+          purchaserPhone,
+          isGift,
+          recipientName: isGift ? recipientName : purchaserName,
+          recipientEmail: isGift ? recipientEmail : purchaserEmail,
+          giftMessage: isGift ? giftMessage : '',
+          timestamp: new Date().toISOString(),
+        }),
+      });
 
-      const paymentResult = await createPaymentLink(paymentData);
+      const webhookResult = await webhookResponse.json();
 
-      if (paymentResult.success && paymentResult.paymentLink) {
+      if (webhookResult.success && webhookResult.paymentLink) {
         // Redirect to Square payment
-        window.location.href = paymentResult.paymentLink;
+        window.location.href = webhookResult.paymentLink;
       } else {
-        setError(paymentResult.error || 'Failed to create payment link');
-        setLoading(false);
+        // Fallback: Create Square payment link directly
+        const paymentData: PaymentLinkData = {
+          customerName: purchaserName,
+          customerEmail: purchaserEmail,
+          serviceType: 'Gift Card',
+          amount: amount,
+          referenceId: result.giftCard.id,
+          description: `Clean Up Bros Gift Card - $${totalValue} total value (includes 15% bonus)`,
+        };
+
+        const paymentResult = await createPaymentLink(paymentData);
+
+        if (paymentResult.success && paymentResult.paymentLink) {
+          window.location.href = paymentResult.paymentLink;
+        } else {
+          setError(webhookResult.error || paymentResult.error || 'Failed to create payment link');
+          setLoading(false);
+        }
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
