@@ -7,115 +7,110 @@
 
 ## What Was Accomplished This Session
 
-### 1. Gift Cards Page Fix
-- Fixed lazy loading crash ("TypeError: Cannot convert object to primitive value")
-- Added default exports to `GiftCardPurchaseView.tsx` and `AdminGiftCardsView.tsx`
+### 1. Gift Card System (COMPLETE)
+Created full gift card purchase and redemption system:
 
-### 2. Mobile Navigation
-- Created hamburger menu for tablet/phone views
-- Added slide-out drawer with all navigation links
-- Fixed `Header.tsx` - nav was hidden on mobile (had `hidden md:block`)
+| Component | Description | Status |
+|-----------|-------------|--------|
+| `GiftCardPurchaseView.tsx` | Updated to use N8N webhook for Square payments | Complete |
+| `CheckBalanceView.tsx` | New page for customers to check gift card balances | Complete |
+| N8N Workflow ID: `dc6bCOR1yqmyO1YK` | Complete gift card automation | Active |
 
-### 3. NDIS Branding
-- Added NDIS logo to: LandingView, Footer, AboutView, ServicesView
-- Copied logo to `/public/ndis-logo.jpg`
-- Trust badges section on multiple pages
+**N8N Workflow Features:**
+- Gift card purchase webhook receives order
+- Creates Square payment link automatically
+- Sends payment email to customer via Gmail
+- Telegram notification for admin
+- Payment completion webhook activates gift card
+- Sends beautiful digital gift card email
 
-### 4. Footer Redesign
-- Complete redesign with 4-column navigation
-- Trust badges row with NDIS, Fully Insured, 4.9 Rating
-- Contact details with ABN
+**Webhooks Created:**
+- `GIFT_CARD_PURCHASE`: https://nioctibinu.online/webhook/gift-card-purchase
+- `GIFT_CARD_PAYMENT_COMPLETE`: https://nioctibinu.online/webhook/gift-card-payment-complete
 
-### 5. Admin Dashboard CRM Features (MAJOR)
-Created 5 new CRM features as admin tabs:
+### 2. Admin Dashboard Fixes
+- **Removed AI Chat** - Prevented website crashes
+- **Mobile Responsiveness** - Complete overhaul:
+  - Flex-col/flex-row responsive navigation
+  - Scrollable quick action buttons on mobile
+  - Icons-only buttons on small screens (`hidden sm:inline`)
+  - Responsive metrics grid (2/3/5 columns)
+  - Scrollable tabs with hidden scrollbar
 
-| Feature | File | Status |
-|---------|------|--------|
-| Pipeline Board (Kanban) | `/components/admin/PipelineBoard.tsx` | Complete |
-| Calendar View | `/components/admin/CalendarView.tsx` | Complete |
-| Invoice Generator | `/components/admin/InvoiceGenerator.tsx` | Complete |
-| Customer History | `/components/admin/CustomerHistory.tsx` | Complete |
-| Email Templates | `/components/admin/EmailTemplates.tsx` | Complete |
+### 3. All Form Webhooks Tested
+All 5 webhooks tested and confirmed working:
+- Landing Lead: SUCCESS
+- Residential Quote: SUCCESS
+- Commercial Quote: SUCCESS
+- Airbnb Quote: SUCCESS
+- Job Application: SUCCESS
 
-**Updated AdminDashboardView.tsx with 8 tabs total:**
-- Overview, Submissions, Pipeline, Calendar, Invoices, Customers, Templates, Chat
+### 4. GitHub Push
+- Commit: `0672c08`
+- Repository: https://github.com/cleanupbro/MY-CLAUDE-CODE-BUILD-.git
 
 ---
 
 ## Files Created/Modified
 
 ### New Files:
-- `/components/admin/PipelineBoard.tsx` - Kanban drag-and-drop
-- `/components/admin/CalendarView.tsx` - Month calendar
-- `/components/admin/InvoiceGenerator.tsx` - PDF invoices (jsPDF)
-- `/components/admin/CustomerHistory.tsx` - Timeline + notes
-- `/components/admin/EmailTemplates.tsx` - Template manager
-- `/public/ndis-logo.jpg` - NDIS logo asset
+- `/views/CheckBalanceView.tsx` - Customer gift card balance check page
 
 ### Modified Files:
-- `/types.ts` - Added PipelineStage, EmailTemplate, CustomerNote, Invoice types
-- `/views/AdminDashboardView.tsx` - New tabs and components
-- `/components/Header.tsx` - Hamburger menu
-- `/components/Footer.tsx` - Complete redesign
-- `/views/LandingView.tsx` - NDIS trust badges
-- `/views/AboutView.tsx` - Accreditations section
-- `/views/ServicesView.tsx` - Trust badges
-- `/views/GiftCardPurchaseView.tsx` - Default export
-- `/views/AdminGiftCardsView.tsx` - Default export
+- `/views/AdminDashboardView.tsx` - Removed AI chat, mobile fixes
+- `/views/GiftCardPurchaseView.tsx` - N8N webhook integration
+- `/App.tsx` - Added CheckBalance route
+- `/types.ts` - Added 'CheckBalance' to ViewType
+- `/components/Footer.tsx` - Added Check Balance link
+- `/constants.ts` - Added gift card webhook URLs
 
 ---
 
-## In Progress / Pending
+## Active N8N Workflows
 
-### Database Migrations (Not Yet Applied):
+| Workflow | ID | Status | Purpose |
+|----------|----|----|---------|
+| CUB - Gift Card System | `dc6bCOR1yqmyO1YK` | Active | Gift card purchases & redemption |
+| CLEAN UP BROS ROI | `49xi6gSdDwMlcHmj` | Active | Quote handling & lead scoring |
+
+---
+
+## How Gift Cards Work
+
+### For Customers:
+1. Visit `/GiftCardPurchase` to buy a gift card
+2. Fill in amount, recipient details
+3. Receive email with Square payment link
+4. After payment, receive digital gift card via email
+5. Check balance at `/CheckBalance` with gift card code
+
+### For Admin:
+- Telegram notification for every purchase
+- Gift cards stored in Supabase
+- Track redemptions and balances
+- Admin panel at `/AdminGiftCards`
+
+---
+
+## Database Tables
+
+### gift_cards (Supabase)
 ```sql
--- Pipeline stage column
-ALTER TABLE submissions
-ADD COLUMN pipeline_stage VARCHAR(20) DEFAULT 'New',
-ADD COLUMN pipeline_updated_at TIMESTAMPTZ;
-
--- Email templates table
-CREATE TABLE email_templates (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name VARCHAR(100) NOT NULL,
-  subject VARCHAR(255) NOT NULL,
-  body TEXT NOT NULL,
-  category VARCHAR(50),
-  placeholders JSONB,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- Customer notes table
-CREATE TABLE customer_notes (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  customer_email VARCHAR(255) NOT NULL,
-  note TEXT NOT NULL,
-  note_type VARCHAR(50),
-  created_by VARCHAR(255),
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
+- id, code, initial_amount, current_balance
+- purchaser_name, purchaser_email, purchaser_phone
+- recipient_name, recipient_email, gift_message
+- is_gift, status, created_at, activated_at, expires_at
+- square_payment_id
 ```
-
-### N8N Webhook Setup:
-- Email templates use `N8N_EMAIL_WEBHOOK` environment variable
-- Need to configure actual webhook URL in `.env`
 
 ---
 
 ## Next Steps
 
-1. **Test all new features** at http://localhost:3000/
-2. **Apply Supabase migrations** for pipeline_stage, email_templates, customer_notes
-3. **Configure N8N webhook** for email sending
-4. **Push to GitHub** when ready for production
-
----
-
-## API Keys (Stored This Session)
-
-- **Gemini API:** `AIzaSyCjpMwASVymgYvGeRe6QYpMCovdK4SXImE` (use gemini-2.0-flash)
-- **HubSpot API:** `ap1-b804-d23a-4c1d-af60-839952510c08`
+1. **Configure Square Credentials in N8N** - Add Square API keys to N8N workflow
+2. **Test Gift Card Purchase Flow** - End-to-end payment test
+3. **Apply Supabase migrations** (if not done) for new tables
+4. **Deploy to production** - Vercel or similar
 
 ---
 

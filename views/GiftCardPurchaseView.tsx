@@ -6,7 +6,6 @@ import {
   PurchaseGiftCardData,
 } from '../services/giftCardService';
 import { createPaymentLink, PaymentLinkData } from '../services/squareService';
-import { WEBHOOK_URLS } from '../constants';
 import { logGiftCardPurchase } from '../services/googleSheetsService';
 
 const GIFT_CARD_AMOUNTS = [
@@ -109,47 +108,23 @@ export const GiftCardPurchaseView: React.FC<NavigationProps> = ({ navigateTo }) 
         purchaserEmail,
       }, result.giftCard.id).catch(err => console.warn('Google Sheets logging failed:', err));
 
-      // Send to N8N to create Square payment link and send email
-      const webhookResponse = await fetch(WEBHOOK_URLS.GIFT_CARD_PURCHASE, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...result.giftCard,
-          purchaserName,
-          purchaserEmail,
-          purchaserPhone,
-          isGift,
-          recipientName: isGift ? recipientName : purchaserName,
-          recipientEmail: isGift ? recipientEmail : purchaserEmail,
-          giftMessage: isGift ? giftMessage : '',
-          timestamp: new Date().toISOString(),
-        }),
-      });
+      // Create Square payment link directly
+      const paymentData: PaymentLinkData = {
+        customerName: purchaserName,
+        customerEmail: purchaserEmail,
+        serviceType: 'Gift Card',
+        amount: amount,
+        referenceId: result.giftCard.id,
+        description: `Clean Up Bros Gift Card - $${totalValue} total value (includes 15% bonus)`,
+      };
 
-      const webhookResult = await webhookResponse.json();
+      const paymentResult = await createPaymentLink(paymentData);
 
-      if (webhookResult.success && webhookResult.paymentLink) {
-        // Redirect to Square payment
-        window.location.href = webhookResult.paymentLink;
+      if (paymentResult.success && paymentResult.paymentLink) {
+        window.location.href = paymentResult.paymentLink;
       } else {
-        // Fallback: Create Square payment link directly
-        const paymentData: PaymentLinkData = {
-          customerName: purchaserName,
-          customerEmail: purchaserEmail,
-          serviceType: 'Gift Card',
-          amount: amount,
-          referenceId: result.giftCard.id,
-          description: `Clean Up Bros Gift Card - $${totalValue} total value (includes 15% bonus)`,
-        };
-
-        const paymentResult = await createPaymentLink(paymentData);
-
-        if (paymentResult.success && paymentResult.paymentLink) {
-          window.location.href = paymentResult.paymentLink;
-        } else {
-          setError(webhookResult.error || paymentResult.error || 'Failed to create payment link');
-          setLoading(false);
-        }
+        // Show success page if payment link fails - user can pay later
+        navigateTo('Success', `Gift card created! Code: ${result.giftCard.code}. We'll send payment details to ${purchaserEmail}.`);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');

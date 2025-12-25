@@ -2,25 +2,17 @@
 import { ServiceType } from './types';
 
 export const WEBHOOK_URLS = {
+  // Main ROI Workflow paths (from N8N workflow 49xi6gSdDwMlcHmj)
   [ServiceType.Residential]: 'https://nioctibinu.online/webhook/98d35453-4f18-40ca-bdfa-ba3aaa02646c',
-  [ServiceType.Commercial]: 'https://nioctibinu.online/webhook/bb12f45e-21f4-4e43-af36-5dbed46fe072',
-  [ServiceType.Airbnb]: 'https://nioctibinu.online/webhook/a12b53e8-2391-4c82-b611-47fa4032c235',
-  [ServiceType.Jobs]: 'https://nioctibinu.online/webhook/8da4395f-48f7-4d56-b500-3c43e2077ac6',
-  [ServiceType.ClientFeedback]: 'https://nioctibinu.online/webhook/22624a36-cd07-4b6b-9334-3909dd3cff9f',
-  LANDING_LEAD: 'https://nioctibinu.online/webhook/c5dc6960-15ee-4ccb-9cac-3bf8ffcb7bda',
+  [ServiceType.Commercial]: 'https://nioctibinu.online/webhook/bb5fdb61-31d7-4001-9dd1-44ef7dc64d32',
+  [ServiceType.Airbnb]: 'https://nioctibinu.online/webhook/5d3f6ff4-5f08-4ccf-9b78-03b62ae6b72f',
+  [ServiceType.Jobs]: 'https://nioctibinu.online/webhook/67f764f2-adff-481e-aa49-fd3de1feecde',
+  [ServiceType.ClientFeedback]: 'https://nioctibinu.online/webhook/client-feedback',
+  LANDING_LEAD: 'https://nioctibinu.online/webhook/8fe0b2c9-3d5b-44f5-84ff-0d0ef896e1fa',
 
   // Admin Booking Confirmation & Payment
   BOOKING_CONFIRMATION: 'https://nioctibinu.online/webhook/booking-confirmation',
   SQUARE_PAYMENT_LINK: 'https://nioctibinu.online/webhook/create-payment-link',
-
-  // Gift Card System (N8N Workflow: dc6bCOR1yqmyO1YK)
-  GIFT_CARD_PURCHASE: 'https://nioctibinu.online/webhook/gift-card-purchase',
-  GIFT_CARD_PAYMENT_COMPLETE: 'https://nioctibinu.online/webhook/gift-card-payment-complete',
-  GIFT_CARD_ACTIVATION: 'https://nioctibinu.online/webhook/gift-card-activation',
-  GIFT_CARD_REDEMPTION: 'https://nioctibinu.online/webhook/gift-card-redemption',
-
-  // Google Sheets Logging (Backup)
-  GOOGLE_SHEETS_LOG: 'https://nioctibinu.online/webhook/google-sheets-log',
 };
 
 export const SUCCESS_MESSAGES = {
