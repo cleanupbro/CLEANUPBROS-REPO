@@ -13,6 +13,10 @@ export const WEBHOOK_URLS = {
   // Admin Booking Confirmation & Payment
   BOOKING_CONFIRMATION: 'https://nioctibinu.online/webhook/booking-confirmation',
   SQUARE_PAYMENT_LINK: 'https://nioctibinu.online/webhook/create-payment-link',
+
+  // AI & SMS Features
+  AI_CHAT: 'https://nioctibinu.online/webhook/cub-ai-chat',
+  SMS_FOLLOWUP: 'https://nioctibinu.online/webhook/cub-sms-followup',
 };
 
 export const SUCCESS_MESSAGES = {

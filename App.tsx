@@ -2,6 +2,7 @@
 import React, { useState, useCallback, useEffect, lazy, Suspense } from 'react';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
+import { ChatWidget } from './components/ChatWidget';
 import { ServiceType, ViewType } from './types';
 import { RetryBanner } from './components/RetryBanner';
 import { ToastProvider } from './contexts/ToastContext';
@@ -176,6 +177,7 @@ const App: React.FC = () => {
           </div>
         </main>
         <Footer navigateTo={navigateTo} />
+        <ChatWidget />
       </div>
     </ToastProvider>
   );
