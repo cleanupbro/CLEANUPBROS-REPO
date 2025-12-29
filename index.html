@@ -64,12 +64,12 @@
     <link rel="dns-prefetch" href="https://nioctibinu.online" />
 
     <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CLEANUPBROS01"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TQW2MRZ309"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-CLEANUPBROS01', {
+      gtag('config', 'G-TQW2MRZ309', {
         'send_page_view': true,
         'cookie_flags': 'SameSite=None;Secure'
       });
@@ -247,7 +247,7 @@
           },
           "sameAs": [
             "https://www.facebook.com/cleanupbros",
-            "https://www.instagram.com/cleanupbros",
+            "https://www.instagram.com/cleanupbros.nsw",
             "https://g.page/cleanupbros"
           ],
           "slogan": "Making Your Space Shine",
@@ -389,6 +389,52 @@
         }
         .animate-slow-zoom {
           animation: slow-zoom 25s ease-in-out infinite alternate;
+        }
+        /* Antigravity Background Animations */
+        @keyframes antigravity-float {
+          0%, 100% {
+            transform: translateY(0) translateX(0) rotate(0deg);
+            opacity: 0.4;
+          }
+          25% {
+            transform: translateY(-30px) translateX(15px) rotate(5deg);
+            opacity: 0.6;
+          }
+          50% {
+            transform: translateY(-50px) translateX(-10px) rotate(-3deg);
+            opacity: 0.5;
+          }
+          75% {
+            transform: translateY(-25px) translateX(20px) rotate(7deg);
+            opacity: 0.7;
+          }
+        }
+        @keyframes morph {
+          0%, 100% {
+            border-radius: 50% 50% 50% 50%;
+            transform: scale(1);
+          }
+          25% {
+            border-radius: 60% 40% 55% 45%;
+            transform: scale(1.05);
+          }
+          50% {
+            border-radius: 45% 55% 40% 60%;
+            transform: scale(0.95);
+          }
+          75% {
+            border-radius: 55% 45% 60% 40%;
+            transform: scale(1.03);
+          }
+        }
+        .animate-antigravity-float {
+          animation: antigravity-float 20s ease-in-out infinite;
+        }
+        .animate-morph {
+          animation: morph 8s ease-in-out infinite;
+        }
+        .bg-gradient-radial {
+          background: radial-gradient(circle, var(--tw-gradient-from) 0%, var(--tw-gradient-to, transparent) 70%);
         }
       }
 
