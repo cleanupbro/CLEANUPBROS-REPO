@@ -11,12 +11,16 @@ export const WEBHOOK_URLS = {
   LANDING_LEAD: 'https://nioctibinu.online/webhook/8fe0b2c9-3d5b-44f5-84ff-0d0ef896e1fa',
 
   // Admin Booking Confirmation & Payment
-  BOOKING_CONFIRMATION: 'https://nioctibinu.online/webhook/booking-confirmation',
+  BOOKING_CONFIRMATION: 'https://nioctibinu.online/webhook/booking-confirmed',
   SQUARE_PAYMENT_LINK: 'https://nioctibinu.online/webhook/create-payment-link',
 
   // AI & SMS Features
   AI_CHAT: 'https://nioctibinu.online/webhook/cub-ai-chat',
   SMS_FOLLOWUP: 'https://nioctibinu.online/webhook/cub-sms-followup',
+
+  // Voice Calling (Twilio + ElevenLabs AI)
+  INBOUND_CALL: 'https://nioctibinu.online/webhook/cub-inbound-call',
+  OUTBOUND_CALL: 'https://nioctibinu.online/webhook/cub-outbound-call',
 };
 
 export const SUCCESS_MESSAGES = {
