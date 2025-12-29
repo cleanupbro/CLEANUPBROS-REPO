@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TQW2MRZ309"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-TQW2MRZ309');
+    </script>
+
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/logo.png" />
     <link rel="apple-touch-icon" href="/logo.png" />
@@ -63,40 +72,35 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="dns-prefetch" href="https://nioctibinu.online" />
 
-    <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TQW2MRZ309"></script>
+    <!-- Custom GA Tracking Functions -->
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-TQW2MRZ309', {
-        'send_page_view': true,
-        'cookie_flags': 'SameSite=None;Secure'
-      });
-
       // Track quote requests
       window.trackQuoteRequest = function(serviceType, value) {
-        gtag('event', 'generate_lead', {
-          'event_category': 'Lead Generation',
-          'event_label': serviceType,
-          'value': value || 0,
-          'currency': 'AUD'
-        });
+        if (typeof gtag === 'function') {
+          gtag('event', 'generate_lead', {
+            'event_category': 'Lead Generation',
+            'event_label': serviceType,
+            'value': value || 0,
+            'currency': 'AUD'
+          });
+        }
       };
 
       // Track card purchases
       window.trackCardPurchase = function(amount) {
-        gtag('event', 'purchase', {
-          'event_category': 'Clean Up Card',
-          'value': amount * 0.85,
-          'currency': 'AUD',
-          'items': [{
-            'item_name': 'Clean Up Card',
-            'item_category': 'Prepaid Credit',
-            'price': amount * 0.85,
-            'quantity': 1
-          }]
-        });
+        if (typeof gtag === 'function') {
+          gtag('event', 'purchase', {
+            'event_category': 'Clean Up Card',
+            'value': amount * 0.85,
+            'currency': 'AUD',
+            'items': [{
+              'item_name': 'Clean Up Card',
+              'item_category': 'Prepaid Credit',
+              'price': amount * 0.85,
+              'quantity': 1
+            }]
+          });
+        }
       };
     </script>
 
