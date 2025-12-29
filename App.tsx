@@ -6,6 +6,7 @@ import { ChatWidget } from './components/ChatWidget';
 import { ServiceType, ViewType } from './types';
 import { RetryBanner } from './components/RetryBanner';
 import { ToastProvider } from './contexts/ToastContext';
+import { AntigravityBackground } from './components/AntigravityBackground';
 
 // Lazy load views for better performance
 const LandingView = lazy(() => import('./views/LandingView'));
@@ -167,8 +168,10 @@ const App: React.FC = () => {
   return (
     <ToastProvider>
       <div className="min-h-screen flex flex-col font-sans antialiased">
+        {/* Antigravity Background - Floating particles effect */}
+        <AntigravityBackground />
         <Header navigateTo={navigateTo} isAdminLoggedIn={isAdminLoggedIn} onLogout={handleLogout} />
-        <main className="flex-grow w-full pt-[48px]">
+        <main className="flex-grow w-full pt-[48px] relative z-10">
           <div className="container mx-auto px-4 py-8">
               <RetryBanner key={retryKey} />
               <Suspense fallback={<LoadingSpinner />}>
